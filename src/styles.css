@@ -1,5 +1,4 @@
-:root {
-    font-family: 'Teko', 'Times New Roman', Times, serif;
+:root {    
     font-size: 16px;
 }
 
@@ -19,41 +18,74 @@ body {
     width: 100%;
     display: grid;
     grid-template-columns: 60px 2fr 7fr 60px;
-    grid-template-rows: 25px 1fr 25px;
+    grid-template-rows: 20px 1fr 20px;
+}
+
+#app-grid > div {
+    display: flex;      
 }
 
 #header {
-    background-color: brown;
+    background-color: #2F4858;    
     grid-column: 1 / 5;
     grid-row: 1 / 2;
 }
 
 #left-side {
-    background-color: aqua;
+    background-color: #336699;
+    flex-direction: column;   
     grid-column: 1 / 2;
     grid-row: 2 / 3;
 }
 
-#collection {
-    background-color: blueviolet;
+#nav {
+    background-color: #86BBD8;    
+    flex-direction: column;    
     grid-column: 2 / 3;
     grid-row: 2 / 3;
 }
 
+#period {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+#period button {
+    padding: 0.25em;
+}
+
+#collection {
+    flex-grow: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #content {
-    background-color: chocolate;
+    background-color: azure;
+    flex-direction: column;    
     grid-column: 3 / 4;
     grid-row: 2 / 3;
 }
 
 #right-side {
-    background-color: cornflowerblue;
+    background-color: #336699;
+    flex-direction: column;    
     grid-column: 4 / 5;
     grid-row: 2 / 3;
 }
 
 #footer {
-    background-color: blue;
+    background-color: #2F4858;     
     grid-column: 1 / 5;
     grid-row: 3 / 4;
+}
+
+.sidebar {
+    padding: 3px;
+    gap: 1em;
 }
