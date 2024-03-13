@@ -1,0 +1,28 @@
+{
+  "name": "to-do-app",
+  "version": "1.0.0",
+  "description": "to-do application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jniemel/to-do-app.git"
+  },
+  "author": "Jniemel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jniemel/to-do-app/issues"
+  },
+  "homepage": "https://github.com/Jniemel/to-do-app#readme",
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  }
+}
