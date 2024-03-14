@@ -15,10 +15,11 @@ collections[0].add(createTodo("firstTodo", "25.5.2025", "Fresh"));
 collections[1].add(createTodo("secondTodo", "25.5.2026", "VeryFresh"));
 collections[1].add(createTodo("thirdTodo", "25.5.2027", "SuperVeryFresh"));
 
+console.log(collections);
 displayCollections(collections);
 
-/*
-collections = removeCollection("test2", collections);
-console.log(collections);
-displayCollections(collections, true);
-*/
+//collections = removeCollection("test3", collections);
+//console.log(collections);
+
+//displayCollections(collections, true);
+

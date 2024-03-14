@@ -1,7 +1,8 @@
 import './styles.css';
 
-export function createTodo(todoSubject, dueDate, todoNotes) {
+export function createTodo(todoSubject = '', dueDate = 'No date set', todoNotes = '', priority = 0) {
 
+    /*
     let subject = todoSubject;
     let due = dueDate;
     let notes = todoNotes;
@@ -11,5 +12,11 @@ export function createTodo(todoSubject, dueDate, todoNotes) {
     const editNotes = (newNotes) => notes = newNotes;
 
     return { subject, due, notes, editSubject, editDate, editNotes};
+    */
+    if (todoSubject.length === 0) {
+        alert('Please add subject!');
+    } else {
+        let todo = [todoSubject, dueDate, todoNotes, priority];
+        return todo;
+    }
 }
-

@@ -8,17 +8,23 @@
     box-sizing: border-box;
 }
 
-body {
+h1 {
+    line-height: 1.9rem;
+}
+
+body {    
     height: 100vh;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
 }
 
 #app-grid {
-    height: 100%;
-    width: 100%;
+    flex-grow: 1;
     display: grid;
-    grid-template-columns: 50px 2fr 7fr 50px;
-    grid-template-rows: 20px 1fr 3fr 20px;
+    grid-template-columns: 55px minmax(250px, 20%) minmax(400px, 1fr) 55px;
+    grid-template-rows: 20px minmax(150px, 1fr) 3fr 20px;
+    overflow: auto;
 }
 
 #app-grid > div {
@@ -38,7 +44,15 @@ body {
     grid-column: 1 / 2;
     grid-row: 3 / 4;
     border-top: 2px solid #aed0e0;
-    border-right: 2px solid #aed0e0;
+    border-right: 2px solid #aed0e0;    
+    padding: 1.3em 3px 0 3px;
+    gap: 1.3em;
+}
+
+#left-side button {
+    padding: 1em;
+    display: flex;
+    justify-content: center;    
 }
 
 #period {
@@ -52,8 +66,11 @@ body {
     padding-right: 10%;         
 }
 
-#period button {
-    padding: 0.25em;
+#period button {    
+    background-color: #cadbe4;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 
 #collections {
@@ -64,7 +81,34 @@ body {
     grid-row: 3 / 4; 
     flex-direction: column;
     justify-content: flex-start;
-    gap: 0.75em;   
+    gap: 0.75em;
+    padding-left: 6%;
+    padding-top: 1em;     
+}
+
+.collection-btn {
+    background-color: #cadbe4;
+    border: none;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.to-do {
+    padding-left: 6px;
+    display: flex;
+    align-items: center;
+    gap: 3px;    
+}
+
+.priority-icon-container {
+    display: flex;
+    height: 10px;
+    width: 10px;
+}
+
+.priority-icon-container img {
+    height: 100%;
+    width: 100%;    
 }
 
 #content {
