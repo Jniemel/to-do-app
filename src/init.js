@@ -3,17 +3,6 @@ import plus from './plus.png';
 import minus from './minus.png';
 import { createCollection, removeCollection, clearCollectionDiv, displayCollection, lastClicked } from './collections';
 
-/*
-// create dialog for adding collection
-const addDialog = document.createElement('dialog');
-const cancelAddBtn = document.createElement('button');
-cancelAddBtn.classList.add('cancel-btn');
-cancelAddBtn.textContent = 'Cancel';
-const confirmAddBtn = document.createElement('button');
-confirmAddBtn.classList.add('add-btn');
-confirmAddBtn.textContent = 'Add collection';
-*/
-
 // placement reference 
 const collectionControls = document.querySelector('#collection-controls');
 
@@ -31,9 +20,10 @@ function createButton(cssClass, text, func, path = '') {
     return btn;
 }
 
-
+// init array for collections
 export let collections = [];
 
+// create a new collection and display it on the page
 export function createNewCollection() {
     let input = prompt('Name of the new collection:');
     if (input != null) {
@@ -46,6 +36,7 @@ export function createNewCollection() {
     } 
 }
 
+// delete collection
 function deleteCollection() {
     if (lastClicked[1] === undefined) {
         alert('No collection selected!');
@@ -55,77 +46,28 @@ function deleteCollection() {
         if (confirm != undefined && confirm != null) {
             if (confirm.toLocaleLowerCase() === 'yes') {
                 removeCollection(lastClicked[1], collections);
-                clearCollectionDiv(lastClicked[1]);
-                
+                clearCollectionDiv(lastClicked[1]);                
             } else {
                 alert('Confirmation did not match!');
             }
         }
-
-
-        /*
-        switch (confirm) {
-            case undefined, null:
-                alert('Confirmation was left blank');
-                break;
-            case confirm.toLocaleLowerCase() = 'yes':
-                alert('DELETED');
-                break;
-            default:
-                alert('Deletion cancelled');
-        }
-        
-        
-        
-        if (confirm === undefined)
-        if (confirm.toLowerCase() === 'yes') {
-            collections = removeCollection(lastClicked[1], collections);
-            clearCollectionsDiv();
-            displayCollection(collections);
-        } else {
-            alert('Collection was not removed');
-        }*/
     }
 }
 
+// wip
 function editTodo() {
     let toEdit = prompt('To-do to edit:');
 }
 
+// wip
 function editCollection() {
     let toEdit = prompt('Collection to edit:');
 
 }
 
+// init page
 export function init() {
-    /*
-    // collection control buttons    
-    const addCollectionBtn = collectionControls.querySelector('.collection-control-btn:first-child');
-    const rmCollectionBtn = collectionControls.querySelector('.collection-control-btn:nth-child(2)');
-    // add image and event listener to buttons
-    addCollectionBtn.style.backgroundImage = "url('" + plus + "')";
-    addCollectionBtn.addEventListener("click", createNewCollection);
-    rmCollectionBtn.style.backgroundImage = "url('" + minus + "')";
-    rmCollectionBtn.addEventListener("click", createNewCollection);
-    */
 
     collectionControls.append(createButton('collection-control-btn', '', createNewCollection, plus), createButton('collection-control-btn', '', deleteCollection, minus));
     
-    
-    
-    /*
-    // edit todo
-    const editTodoBtn = document.createElement('button');
-    editTodoBtn.classList.add('test-btn')
-    editTodoBtn.textContent = "editTodo";
-    editTodoBtn.addEventListener('click', editTodo)
-    collectionControls.append(editTodoBtn);
-
-    // edit collection 
-    const editCollectionBtn = document.createElement('button');
-    editCollectionBtn.classList.add('test-btn')
-    editCollectionBtn.textContent = "editCollection";
-    editCollectionBtn.addEventListener('click', editCollection)
-    collectionControls.append(editCollectionBtn);
-    */
 }

@@ -12,7 +12,7 @@ export function createTodo(todoSubject, todoDueDate, todoNotes, todoPriority = 0
         let status = false;
         const getStatus = () => status;
         const editStatus = () => status = status ? false : true;
-        const short = () => subject.slice(0, 50);
+        const short = () => subject.slice(0, 50) + "...";
 
         return { subject, date, notes, priority, getStatus, editStatus, short };
     }
