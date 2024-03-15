@@ -142,7 +142,7 @@ body {
     padding-right: 6px;
 }
 
-.collection-btn#last-clicked {
+.collection-btn[data="last-clicked"] {
     color: #80b3d1;
     border: 1px dashed #80b3d1;
     margin: -1px;
@@ -168,7 +168,7 @@ body {
     max-height: 75px;      
 }
 
-p#last-clicked{
+p[data="last-clicked"]{
     color: #80b3d1;
     border: 1px dashed #80b3d1;
     margin: -1px;    

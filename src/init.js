@@ -38,20 +38,24 @@ export function createNewCollection() {
 
 // delete collection
 function deleteCollection() {
-    if (lastClicked[1] === undefined) {
-        alert('No collection selected!');
-    } else {
+    
+    if (lastClicked[0] === 'collection' && lastClicked[0].length != 0  && lastClicked[0].length != 0 && lastClicked[1] != null && lastClicked[1] != undefined) {
+
         const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClicked[1] + '"?\nConfirm by writing "yes"');
         
         if (confirm != undefined && confirm != null) {
             if (confirm.toLocaleLowerCase() === 'yes') {
                 removeCollection(lastClicked[1], collections);
-                clearCollectionDiv(lastClicked[1]);                
+                clearCollectionDiv(lastClicked[1]);
+                lastClicked[0] = '';
+                lastClicked[1] = '';
             } else {
                 alert('Confirmation did not match!');
             }
         }
-    }
+    } else {
+        alert('No collection selected!');
+    } 
 }
 
 // wip

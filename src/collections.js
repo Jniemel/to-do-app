@@ -16,6 +16,7 @@ export function createCollection(collectionName) {
 
     const addTodo = (todo) => todos.push(todo);
     const clearTodos = () => todos.length = 0;
+    const short = () => name.slice(0, 17) + "...";
     function progress() {
         // calculate the collections progress from # of done to-do's
         let total = todos.length;
@@ -29,7 +30,7 @@ export function createCollection(collectionName) {
         return  percent + "%";
     }
 
-    return {  name, todos, addTodo, clearTodos, progress };
+    return {  name, todos, addTodo, clearTodos, short, progress };
 }
 
 // remove a collection from array
@@ -68,6 +69,7 @@ function displayTodo(todo) {
      // create a div for to-do
      const todoDiv = document.createElement('div');
      todoDiv.classList.add('to-do');
+     todoDiv.id = todo['subject'];
 
      // add priority icon according to to-do priority or
      // if to-do done, add done icon
@@ -106,14 +108,19 @@ export function displayCollection(collection) {
     const collectionDiv = document.createElement('div');
     collectionDiv.classList.add('collection');
     collectionDiv.id = collection["name"];
-    const collectionHeader = document.createElement('div')
-    collectionHeader.classList.add('collection-header')
+    const collectionHeader = document.createElement('div');
+    collectionHeader.classList.add('collection-header');
     collectionDiv.appendChild(collectionHeader);
 
     // add button and progress div to header
     const headerBtn = document.createElement('button');
-    headerBtn.classList.add('collection-btn')
-    headerBtn.textContent = collection["name"];
+    headerBtn.classList.add('collection-btn');
+    if (collection["name"].length > 17) {
+        console.log('here');
+        headerBtn.textContent = collection.short();
+    } else {
+        headerBtn.textContent = collection["name"];
+    }    
     headerBtn.addEventListener('click', highlight);
     const progressDiv = document.createElement('div');
     progressDiv.classList.add('progress-div');
@@ -154,15 +161,27 @@ export function displayCollection(collection) {
 export let lastClicked = [];
 
 function highlight(e) {
-
+    
+    // remove 'last clicked' attribute if new button is clicked
     const divs = placement.querySelectorAll('.collection button, .to-do p');
     divs.forEach((btn) => {
-        if (btn.id === 'last-clicked') {            
-            btn.removeAttribute('id');
+        if (btn.getAttribute('data') === 'last-clicked') {            
+            btn.removeAttribute('data');            
         }
     });
+    
+    // set 'last clicked' attribute to button that was clicked
+    e.target.setAttribute('data', 'last-clicked')
 
-    e.target.id = "last-clicked";
-    lastClicked[0] = e.target.classList[0];
-    lastClicked[1] = e.target.innerText;
+    // store the class and id of last clicked collection / to-do
+    if (e.target.classList[0] === 'collection-btn') {
+          
+        lastClicked[0] = e.target.parentNode.parentNode.classList[0];    
+        lastClicked[1] = e.target.parentNode.parentNode.id;
+
+    } else if (e.target.classList[0] === 'sub-txt') {
+        
+        lastClicked[0] = e.target.parentNode.classList[0];
+        lastClicked[1] = e.target.parentNode.id;
+    }
 }
