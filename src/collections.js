@@ -1,75 +1,151 @@
 import './styles.css';
-import star from './star.png';
+import clock from './clock.png';
+import circle from './circle.png';
+import snail from './snail.png';
+import check from './check.png';
+
+// reference to placement of collections
+const placement = document.querySelector('#collections');
 
 // create a to-do collection
 export function createCollection(collectionName) {
 
-    const name = collectionName;
-    let todos = [];    
-    
-    const add = (todo) => todos.push(todo);
+    let name = collectionName;
+    let todos = [];   
 
-    const clear = () => todos.length = 0;
+    const addTodo = (todo) => todos.push(todo);
+    const clearTodos = () => todos.length = 0;
+    function progress() {
+        // calculate the collections progress from # of done to-do's
+        let total = todos.length;
+        let done = 0;
+        for (let i = 0; i < total; i++) {
+            if (todos[i].getStatus()) {
+                done += 1;
+            }
+        }
+        let percent = Math.trunc((done / total) * 100);
+        return  percent + "%";
+    }
 
-    return { name, todos, add, clear };
+    return {  name, todos, addTodo, clearTodos, progress };
 }
 
-// remove a to-do collection from array
-export function removeCollection(toRemove, collectionArray) {
-    for (let i = 0; i < collectionArray.length; i++) {
-        if (collectionArray[i]["name"] === toRemove) {
-            collectionArray.splice(i, 1);
-            return collectionArray;
+// remove a collection from array
+export function removeCollection(toRemove, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i]["name"] === toRemove) {
+            array.splice(i, 1);
+            return array;
         }
-    }}
-
-// display to-do collections on page
-// if trigClear = true, clear collections
-// (use when removing a collection or todo)
-export function displayCollections(collectionArr, trigClear = false) {
-
-    const placement = document.querySelector('#collections');
-
-    // clear collections 
-    if (trigClear) {
-        const toClear = placement.querySelectorAll('.collection');
-        toClear.forEach(div => {
-            div.remove();
-        });
     }
+}
 
-    // display the collections
-    for (let i = 0; i < collectionArr.length; i++) {
+// clear collections from page 
+export function clearCollectionsDiv() {
+    const toClear = placement.querySelectorAll('.collection');
+    toClear.forEach(div => {
+        div.remove();
+    });
+}
 
-        // create placement reference and collection header
-        const collection = document.createElement('div');
-        collection.classList.add('collection');
-        let header = document.createElement('button');
-        header.classList.add('collection-btn')
-        header.textContent = collectionArr[i]["name"];
+// picking the right icon according to to-do's priority
+function priorityIcon(priority) {
+    if (priority === 2) {
+        return [clock, 'clock'];
+    } else if (priority === 1) {
+        return [circle, 'circle'];
+    } else {
+        return [snail, 'snail'];
+    }
+}
+
+// display collection on page
+export function displayCollectionDiv(collection) {
+
+    // create collection div & header for collection
+    const collectionDiv = document.createElement('div');
+    collectionDiv.classList.add('collection');
+    const collectionHeader = document.createElement('div')
+    collectionHeader.classList.add('collection-header')
+    collectionDiv.appendChild(collectionHeader);
+
+    // add button and progress div to header
+    const headerBtn = document.createElement('button');
+    headerBtn.classList.add('collection-btn')
+    headerBtn.textContent = collection["name"];
+    headerBtn.addEventListener('click', highlight);
+    const progressDiv = document.createElement('div');
+    progressDiv.classList.add('progress-div');
+    collectionHeader.append(headerBtn, progressDiv);
+
+    // if collection has to-dos, append to-do subjects
+    // and display them under collection header
+    if (collection.todos.length > 0) {
+
+        //create container for to-do's
+        const todoDiv = document.createElement('div');
+        todoDiv.classList.add('todo-div');
+        collectionDiv.appendChild(todoDiv);
         
-        collection.appendChild(header);
 
-        // if collection has to-dos, append subject and display
-        if (collectionArr[i].todos.length > 0) {
-            for (let j = 0; j < collectionArr[i].todos.length; j++) {
-                
-                const todo = document.createElement('div');
-                todo.classList.add('to-do');
-                const prioIcon = document.createElement('div');
-                prioIcon.classList.add('priority-icon-container');
-                const icon = new Image();
-                icon.src = star;
-                const sub = document.createElement('h4');
-                sub.textContent = collectionArr[i].todos[j][0];
+        for (let i = 0; i < collection.todos.length; i++) {
+            
+            // create a div for a to-do
+            const todo = document.createElement('div');
+            todo.classList.add('to-do');
 
-                prioIcon.appendChild(icon);
-                todo.appendChild(prioIcon);
-                todo.appendChild(sub);
-                collection.appendChild(todo);
-            }            
+            // add priority icon according to to-do priority
+            // if to-do done, add done icon
+            const prioIcon = document.createElement('div');                ;
+            const icon = new Image();
+            if (!collection.todos[i].getStatus()) {
+                const priority = priorityIcon(collection.todos[i]["priority"])                
+                icon.src = priority[0];
+                prioIcon.classList.add(priority[1]);   
+            } else {
+                icon.src = check;
+                prioIcon.classList.add('check');
+            }
+            
+            const sub = document.createElement('p');                
+            sub.textContent = collection.todos[i]["subject"];
+
+            // append to-do into collection div
+            prioIcon.appendChild(icon);
+            todo.appendChild(prioIcon);
+            todo.appendChild(sub);
+            todoDiv.appendChild(todo);
         }
+        
+        // calculate collection progress
+        progressDiv.textContent = collection.progress();
+        
+    } else {
 
-        placement.appendChild(collection);
+        // if no todos, add empty text
+        const empty = document.createElement('div');
+        empty.classList.add('empty');
+        empty.textContent = "This collection is empty...";
+        collectionDiv.appendChild(empty);
     }
+    
+    // append to page
+    placement.appendChild(collectionDiv);
+            
+}
+
+// highlight and save last clicked collection
+export let lastClicked = '';
+
+function highlight(e) {
+    const divs = placement.querySelectorAll('.collection button');
+    console.log(divs);    
+    divs.forEach((btn) => {
+        if (btn.id === 'last-clicked') {            
+            btn.removeAttribute('id');
+        }
+    });    
+    e.target.id = "last-clicked";
+    lastClicked = e.target.innerText;
 }

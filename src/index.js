@@ -1,25 +1,41 @@
-import init from './init';
-import { createCollection, removeCollection, displayCollections } from './collections';
-import { createTodo } from './todo';
-
-let collections = [];
-
-collections.push(createCollection('test1'));
-collections.push(createCollection('test2'));
-collections.push(createCollection('test3'));
-collections.push(createCollection('test4'));
+import { collections, init } from './init';
+import { createCollection, removeCollection, displayCollectionDiv } from './collections';
+import { createTodo, removeTodo } from './todo';
 
 
+init()
 
-collections[0].add(createTodo("firstTodo", "25.5.2025", "Fresh"));
-collections[1].add(createTodo("secondTodo", "25.5.2026", "VeryFresh"));
-collections[1].add(createTodo("thirdTodo", "25.5.2027", "SuperVeryFresh"));
+// EXAMPLES ---------------
+collections.push(createCollection('Studies'));
+collections.push(createCollection('Hobbies'));
+collections.push(createCollection('Work'));
+collections.push(createCollection('Misc'));
+collections.push(createCollection('Secret-project'));
 
-console.log(collections);
-displayCollections(collections);
+collections[0].addTodo(createTodo("Study math test", "10.5.2024", "Calculus", 2));
+collections[0].addTodo(createTodo("group project", "20.5.2024", "Finish the presentation...", 2));
+collections[0].todos[0].editStatus();
 
-//collections = removeCollection("test3", collections);
-//console.log(collections);
+collections[1].addTodo(createTodo("Learn programming", "", "Slow and steady...", 0));
+collections[1].addTodo(createTodo("Get new running shoes", "", "Nikes?", 1));
 
-//displayCollections(collections, true);
+collections[3].addTodo(createTodo("Car oil change", "30.3.2024", "change filters", 1));
+collections[3].addTodo(createTodo("Dentist appointment", "", "", 1));
+collections[3].addTodo(createTodo("Book flights", "1.6.2024", "", 1));
 
+collections[4].addTodo(createTodo("Secret...", "25.5.2025", "", 1));
+// EXAMPLES ---------------
+
+
+
+console.log(collections[1]);
+
+/*
+console.log(collections[0].todos[0]["status"]);
+collections[0].todos[0]["status"] = true;
+console.log(collections[0].todos[0]["status"]);
+*/
+
+for (let i = 0; i < collections.length; i++) {
+    displayCollectionDiv(collections[i]);
+}
