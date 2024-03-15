@@ -3,7 +3,8 @@ import clock from './clock.png';
 import circle from './circle.png';
 import snail from './snail.png';
 import check from './check.png';
-import { openCollection } from './content';
+import { clearContainer, openCollection } from './content';
+import { collections } from './init';
 
 // reference to placement of collections
 const placement = document.querySelector('#collections');
@@ -174,14 +175,20 @@ function highlight(e) {
     e.target.setAttribute('data', 'last-clicked')
 
     // store the class and id of last clicked collection / to-do
-    if (e.target.classList[0] === 'collection-btn') {
-          
+    if (e.target.classList[0] === 'collection-btn') {          
         lastClicked[0] = e.target.parentNode.parentNode.classList[0];    
         lastClicked[1] = e.target.parentNode.parentNode.id;
 
-    } else if (e.target.classList[0] === 'sub-txt') {
-        
+    } else if (e.target.classList[0] === 'sub-txt') {        
         lastClicked[0] = e.target.parentNode.classList[0];
         lastClicked[1] = e.target.parentNode.id;
     }
+
+    // display the collections content on page
+    clearContainer();
+    collections.forEach((element) => {        
+        if (element["name"] === lastClicked[1]) {            
+            openCollection(element["todos"]);
+        }
+    });
 }

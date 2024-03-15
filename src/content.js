@@ -1,7 +1,7 @@
 import './styles.css';
 
 // placement reference
-const placement = document.querySelector('#content');
+const placement = document.querySelector('#content .content-container');
 
 function displayTodo(todo) {
     
@@ -23,8 +23,18 @@ function displayTodo(todo) {
     return div;
 }
 
+export function clearContainer() {    
+    const toClear = placement.querySelectorAll('.to-do-content');    
+    toClear.forEach((div) => {
+            console.log(div);            
+            div.remove();
+    });    
+}
+
+
 export function openCollection(array) {
+
     for (let i = 0; i < array.length; i++) {
-        displayTodo(array[i]);
+        placement.appendChild(displayTodo(array[i]));
     }
 }

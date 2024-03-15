@@ -38,7 +38,7 @@ export function createNewCollection() {
 
 // delete collection
 function deleteCollection() {
-    
+
     if (lastClicked[0] === 'collection' && lastClicked[0].length != 0  && lastClicked[0].length != 0 && lastClicked[1] != null && lastClicked[1] != undefined) {
 
         const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClicked[1] + '"?\nConfirm by writing "yes"');
@@ -72,6 +72,8 @@ function editCollection() {
 // init page
 export function init() {
 
+    // add & remove collection buttons
     collectionControls.append(createButton('collection-control-btn', '', createNewCollection, plus), createButton('collection-control-btn', '', deleteCollection, minus));
+
     
 }
