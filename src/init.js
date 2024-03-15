@@ -31,7 +31,7 @@ function editTodo() {
 
 function editCollection() {
     let toEdit = prompt('Collection to edit:');
-        
+
 }
 
 export function init() {
@@ -44,7 +44,6 @@ export function init() {
     addCollectionBtn.addEventListener("click", createNewCollection);
     rmCollectionBtn.style.backgroundImage = "url('" + minus + "')";
     rmCollectionBtn.addEventListener("click", createNewCollection);
-
 
     // add test buttons
     // edit todo
@@ -60,6 +59,4 @@ export function init() {
     editCollectionBtn.textContent = "editCollection";
     editCollectionBtn.addEventListener('click', editCollection)
     collectionControls.append(editCollectionBtn);
-
-
 }

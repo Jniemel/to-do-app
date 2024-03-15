@@ -60,8 +60,42 @@ function priorityIcon(priority) {
     }
 }
 
+function displayTodo(todo) {
+     // create a div for to-do
+     const todoDiv = document.createElement('div');
+     todoDiv.classList.add('to-do');
+
+     // add priority icon according to to-do priority or
+     // if to-do done, add done icon
+     const prioIcon = document.createElement('div');                ;
+     const icon = new Image();
+     if (!todo.getStatus()) {
+         const priority = priorityIcon(todo["priority"])                
+         icon.src = priority[0];
+         prioIcon.classList.add(priority[1]);   
+     } else {
+         icon.src = check;
+         prioIcon.classList.add('check');
+     }
+     // create add subject, shorten subject if > 50 characters
+     const sub = document.createElement('p'); 
+     if (todo["subject"].length > 50) {
+        sub.textContent = todo.short();
+     } else {
+        sub.textContent = todo["subject"];
+     }     
+     sub.addEventListener('click', highlight);
+
+     // append elements into to-do
+     prioIcon.appendChild(icon);
+     todoDiv.appendChild(prioIcon);
+     todoDiv.appendChild(sub);
+
+     return todoDiv;
+}
+
 // display collection on page
-export function displayCollectionDiv(collection) {
+export function displayCollection(collection) {
 
     // create collection div & header for collection
     const collectionDiv = document.createElement('div');
@@ -83,39 +117,14 @@ export function displayCollectionDiv(collection) {
     // and display them under collection header
     if (collection.todos.length > 0) {
 
-        //create container for to-do's
+        // create container for to-do's
         const todoDiv = document.createElement('div');
         todoDiv.classList.add('todo-div');
-        collectionDiv.appendChild(todoDiv);
+        collectionDiv.appendChild(todoDiv);        
         
-
-        for (let i = 0; i < collection.todos.length; i++) {
-            
-            // create a div for a to-do
-            const todo = document.createElement('div');
-            todo.classList.add('to-do');
-
-            // add priority icon according to to-do priority
-            // if to-do done, add done icon
-            const prioIcon = document.createElement('div');                ;
-            const icon = new Image();
-            if (!collection.todos[i].getStatus()) {
-                const priority = priorityIcon(collection.todos[i]["priority"])                
-                icon.src = priority[0];
-                prioIcon.classList.add(priority[1]);   
-            } else {
-                icon.src = check;
-                prioIcon.classList.add('check');
-            }
-            
-            const sub = document.createElement('p');                
-            sub.textContent = collection.todos[i]["subject"];
-
-            // append to-do into collection div
-            prioIcon.appendChild(icon);
-            todo.appendChild(prioIcon);
-            todo.appendChild(sub);
-            todoDiv.appendChild(todo);
+        // display the collections to-dos
+        for (let i = 0; i < collection.todos.length; i++) {            
+            todoDiv.appendChild(displayTodo(collection.todos[i]));
         }
         
         // calculate collection progress
@@ -130,7 +139,7 @@ export function displayCollectionDiv(collection) {
         collectionDiv.appendChild(empty);
     }
     
-    // append to page
+    // append to collections div
     placement.appendChild(collectionDiv);
             
 }
@@ -139,8 +148,9 @@ export function displayCollectionDiv(collection) {
 export let lastClicked = '';
 
 function highlight(e) {
-    const divs = placement.querySelectorAll('.collection button');
-    console.log(divs);    
+    const divs = placement.querySelectorAll('.collection button, .to-do p');
+    //console.log(divs);
+        
     divs.forEach((btn) => {
         if (btn.id === 'last-clicked') {            
             btn.removeAttribute('id');
@@ -148,4 +158,5 @@ function highlight(e) {
     });    
     e.target.id = "last-clicked";
     lastClicked = e.target.innerText;
+    
 }

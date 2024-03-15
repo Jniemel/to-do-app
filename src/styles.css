@@ -142,7 +142,7 @@ body {
     padding-right: 6px;
 }
 
-#last-clicked {
+.collection-btn#last-clicked {
     color: #80b3d1;
     border: 1px dashed #80b3d1;
     margin: -1px;
@@ -161,42 +161,45 @@ body {
     padding: 4px 0 4px 0;       
 }
 
-.to-do p {
+.to-do p {    
     display: flex;
-    align-items: center;       
-    width: 85%;
+    align-items: center;
+    flex-grow: 1;
+    max-height: 60px;      
+}
+
+p#last-clicked{
+    color: #80b3d1;
+    border: 1px dashed #80b3d1;
+    margin: -1px;    
 }
 
 .to-do div {
-    flex-grow: 1;
+    min-width: 30px;
 }
 
 .clock {
     display: flex;
     justify-content: center;
-    height: 25px;
-    width: 25px;      
+    height: 25px;      
 }
 
 .circle {
     display: flex;
     justify-content: center;
-    height: 12px;
-    width: 25px;    
+    height: 12px;    
 }
 
 .snail {
     display: flex;
     justify-content: center;    
-    height: 19px;    
-    width: 25px;      
+    height: 19px;   
 }
 
 .check {
     display: flex;
     justify-content: center;    
-    height: 13px;    
-    width: 25px;
+    height: 13px;
     margin-bottom: 3px;   
 }
 
