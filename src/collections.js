@@ -3,6 +3,7 @@ import clock from './clock.png';
 import circle from './circle.png';
 import snail from './snail.png';
 import check from './check.png';
+import { openCollection } from './content';
 
 // reference to placement of collections
 const placement = document.querySelector('#collections');
@@ -41,11 +42,14 @@ export function removeCollection(toRemove, array) {
     }
 }
 
-// clear collections from page 
-export function clearCollectionsDiv() {
-    const toClear = placement.querySelectorAll('.collection');
-    toClear.forEach(div => {
-        div.remove();
+// clear collection div 
+export function clearCollectionDiv(name) {
+
+    const divs = document.querySelectorAll('.collection');
+    divs.forEach(div => {
+        if (div.id === name) {
+            div.remove();
+        }
     });
 }
 
@@ -78,7 +82,8 @@ function displayTodo(todo) {
          prioIcon.classList.add('check');
      }
      // create add subject, shorten subject if > 50 characters
-     const sub = document.createElement('p'); 
+     const sub = document.createElement('p');
+     sub.classList.add('sub-txt'); 
      if (todo["subject"].length > 50) {
         sub.textContent = todo.short();
      } else {
@@ -100,6 +105,7 @@ export function displayCollection(collection) {
     // create collection div & header for collection
     const collectionDiv = document.createElement('div');
     collectionDiv.classList.add('collection');
+    collectionDiv.id = collection["name"];
     const collectionHeader = document.createElement('div')
     collectionHeader.classList.add('collection-header')
     collectionDiv.appendChild(collectionHeader);
@@ -144,19 +150,19 @@ export function displayCollection(collection) {
             
 }
 
-// highlight and save last clicked collection
-export let lastClicked = '';
+// highlight and save last clicked collection / to-do
+export let lastClicked = [];
 
 function highlight(e) {
+
     const divs = placement.querySelectorAll('.collection button, .to-do p');
-    //console.log(divs);
-        
     divs.forEach((btn) => {
         if (btn.id === 'last-clicked') {            
             btn.removeAttribute('id');
         }
-    });    
+    });
+
     e.target.id = "last-clicked";
-    lastClicked = e.target.innerText;
-    
+    lastClicked[0] = e.target.classList[0];
+    lastClicked[1] = e.target.innerText;
 }

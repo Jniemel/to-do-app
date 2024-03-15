@@ -1,7 +1,6 @@
 import { collections, init } from './init';
-import { createCollection, removeCollection, displayCollection } from './collections';
+import { createCollection, removeCollection, displayCollection, lastClicked } from './collections';
 import { createTodo, removeTodo } from './todo';
-
 
 init()
 
@@ -30,4 +29,3 @@ for (let i = 0; i < collections.length; i++) {
     displayCollection(collections[i]);
 }
 
-console.log(collections[3].todos[2].short());
