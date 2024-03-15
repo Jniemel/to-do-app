@@ -26,16 +26,6 @@ collections[3].addTodo(createTodo("Book flights", "1.6.2024", "", 1));
 collections[4].addTodo(createTodo("Secret...", "25.5.2025", "", 1));
 // EXAMPLES ---------------
 
-
-
-console.log(collections[1]);
-
-/*
-console.log(collections[0].todos[0]["status"]);
-collections[0].todos[0]["status"] = true;
-console.log(collections[0].todos[0]["status"]);
-*/
-
 for (let i = 0; i < collections.length; i++) {
     displayCollectionDiv(collections[i]);
 }
