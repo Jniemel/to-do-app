@@ -76,19 +76,7 @@ export function open(e) {
                     }
                 });                
             }
-        }); 
-        
-        /*
-        const todos = todoParent.querySelectorAll('.todo-div .to-do');
-        todos.forEach((todo) => {
-            if (todo.id === lastClickedId) {
-                console.log(todo);
-            }
-        });     
-        */
-        //console.log(document.querySelector('#' + lastClickedId + ' .to-do'));
-        //openTodo(document.querySelector('to-do p #' + lastClickedId));
-        
+        });       
     }
     
     if (changeLastClicked) {
