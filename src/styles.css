@@ -165,7 +165,8 @@ body {
     display: flex;
     align-items: center;
     flex-grow: 1;
-    max-height: 75px;      
+    max-height: 75px;
+    overflow-x: hidden;      
 }
 
 p[data="last-clicked"]{

@@ -4,7 +4,7 @@ function createCollection(collectionName) {
     let name = collectionName;
     let todos = [];   
 
-    const addTodo = (todo) => todos.push(todo);
+    //const addTodo = (todo) => todos.push(todo);
     const clearTodos = () => todos.length = 0;
     const short = () => name.slice(0, 17) + "...";
     function progress() {
@@ -20,7 +20,7 @@ function createCollection(collectionName) {
         return  percent + "%";
     }
 
-    return {  name, todos, addTodo, clearTodos, short, progress };
+    return {  name, todos, clearTodos, short, progress };
 }
 
 export function addCollection(name, collections) {

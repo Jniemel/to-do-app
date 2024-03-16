@@ -1,11 +1,13 @@
 import plus from './images/plus.png';
 import minus from './images/minus.png';
 import { addCollection, removeCollection } from './collections';
+import { addTodo } from './todo';
 import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, openTodo, openCollection  } from './dom';
 
 // references
 const collectionControls = document.querySelector('#collection-controls');
 export const collectionsContainer = document.querySelector('#collections');
+const rightSide = document.querySelector('#right-side');
 
 // init array for collections
 export let collections = [];
@@ -41,6 +43,7 @@ function createNewCollection() {
 // save last clicked collection / to-do and
 // show the details in content area
 export let lastClickedId = '';
+export let lastClickedClass = '';
 export let todoParent = '';
 
 export function open(e) {    
@@ -48,7 +51,7 @@ export function open(e) {
     let changeLastClicked = false;
 
     // if a collection is clicked
-    if (e.target.classList[0] === 'collection-btn' && e.target.parentNode.parentNode.id != lastClickedId) {        
+    if (e.target.classList[0] === 'collection-btn' && e.target.parentNode.parentNode.id != lastClickedId) {
         
         lastClickedId = e.target.closest('.collection').id;        
         changeLastClicked = true;
@@ -61,7 +64,7 @@ export function open(e) {
         });              
         
     // if a to-do is clicked
-    } else if (e.target.classList[0] === 'sub-txt' && e.target.parentNode.id != lastClickedId) {        
+    } else if (e.target.classList[0] === 'sub-txt' && e.target.parentNode.id != lastClickedId) { 
         
         todoParent = e.target.closest('.collection');        
         lastClickedId = e.target.closest('.to-do').id;        
@@ -89,22 +92,25 @@ export function open(e) {
         });
         // set 'last clicked' attribute to button that was clicked
         e.target.setAttribute('data', 'last-clicked')
+        lastClickedClass = e.target.classList[0];
     } 
 }
 
 // delete collection
 function deleteCollection() {
+    
+    // check if collection was last clicked element
+    if (lastClickedClass === 'collection-btn' && lastClickedId.length != 0 && lastClickedId != null && lastClickedId != undefined) {
 
-    if (lastClicked[0] === 'collection' && lastClicked[0].length != 0  && lastClicked[0].length != 0 && lastClicked[1] != null && lastClicked[1] != undefined) {
-
-        const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClicked[1] + '"?\nConfirm by writing "yes"');
+        // confirmation, has to match "yes", no case sensitivity
+        const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClickedId + '"?\nConfirm by writing "yes"');
         
         if (confirm != undefined && confirm != null) {
             if (confirm.toLocaleLowerCase() === 'yes') {
-                removeCollection(lastClicked[1], collections);
-                clearCollectionDiv(lastClicked[1]);
-                lastClicked[0] = '';
-                lastClicked[1] = '';
+                removeCollection(lastClickedId, collections);
+                clearCollectionDiv(lastClickedId);
+                lastClickedClass = '';
+                lastClickedId = '';
             } else {
                 alert('Confirmation did not match!');
             }
@@ -113,6 +119,30 @@ function deleteCollection() {
         alert('No collection selected!');
     } 
 }
+
+// creat a new to do and add it to active (lastClicked) collection
+function createNewTodo() {
+
+    if (lastClickedId.length != 0) {
+
+        let todo = Array(4).fill('');
+        let collection = collections.find(element => element["name"] === lastClickedId);    
+        todo[0] = prompt('name');
+        addTodo(collection, todo);
+        const appendTo = collectionsContainer.querySelector('#' + lastClickedId);
+        const divs = appendTo.querySelectorAll('div');
+        divs.forEach((div) => {
+            //console.log(div.getAttribute('class'));
+            if (div.getAttribute('class') === 'empty') {
+                div.remove();
+            }
+        });
+
+        console.log(collection["todos"][collection["todos"].length - 1]["subject"].length);
+        appendTo.appendChild(createTodoDiv(collection["todos"][collection["todos"].length - 1], open))
+    }
+}
+
 
 // wip
 function editTodo() {
@@ -131,6 +161,9 @@ export function init() {
     // add & remove collection buttons
     collectionControls.appendChild(createButton('collection-control-btn', '', createNewCollection, plus));
     collectionControls.appendChild(createButton('collection-control-btn', '', deleteCollection, minus))
+
+    // to-do controls
+    rightSide.appendChild(createButton('test-btn', 'add-todo', createNewTodo));
 
     
 }
