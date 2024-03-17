@@ -241,6 +241,19 @@ p[data="last-clicked"]{
     grid-row: 2 / 4;   
 }
 
+#to-do-controls button {
+    background-color: azure;
+    border-color: #80b3d1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 40% 50%;    
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;       
+    box-shadow: -2px 2px 5px 1px #71abc9;  
+}
+
 #footer {
     background-color: #2F4858;     
     grid-column: 1 / 5;

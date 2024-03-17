@@ -137,7 +137,7 @@ export function createCollectionDiv(collection, listenerFunction) {
 const contentArea = document.querySelector('#content .content-container');
 
 // clear content container
-function clearContentArea() {    
+export function clearContentArea() {    
     const toClear = contentArea.querySelectorAll('.to-do-details');    
     toClear.forEach((div) => {                       
             div.remove();
