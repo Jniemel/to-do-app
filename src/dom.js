@@ -230,3 +230,12 @@ export function openCollection(collection) {
         contentArea.appendChild(todoDetails(collection.todos[i]));
     }
 }
+
+// ------------ dialogs ------------
+
+// new to-do dialog reference
+const newTodoDialog = document.querySelector('#dialog-new-todo');
+
+export function openNewTodoDialog() {
+    newTodoDialog.showModal();
+}

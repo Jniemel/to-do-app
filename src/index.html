@@ -30,6 +30,35 @@
             <div id="to-do-controls"></div>
         </div>        
         <div id="footer"><h5>@Jniemel</h5></div>
+        <dialog id="dialog-new-todo">
+            <form>
+                <div>
+                    <h2>New to-do</h2>
+                    <button type="submit" aria-label="close" formmethod="dialog" formnovalidate>X</button>                    
+                </div>          
+                <p>
+                    <label>Name:</label>
+                    <input type="text" name="todo-name" required />                    
+                </p>
+                <p>
+                <label>Notes:</label>
+                    <textarea type="text" name="todo-notes" rows="3">Notes...</textarea>                    
+                </p>
+                <p>
+                <label>Priority:
+                    <select name="todo-priority">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    </select>
+                </label>
+                </p>
+                <p>
+                <button type="submit">Create</button>
+                </p>       
+          </form>
+        </dialog>    
     </div>
+    
 </body>
 </html>

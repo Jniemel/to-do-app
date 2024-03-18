@@ -20,7 +20,7 @@ body {
     height: 100vh;
     width: 100vw;    
     display: flex;
-    flex-direction: column;
+    flex-direction: column;    
 }
 
 #app-grid {
@@ -166,6 +166,8 @@ body {
     margin: -1px;
 }
 
+
+
 .progress-div {
     flex-grow: 1;
     display: flex;
@@ -290,4 +292,55 @@ body {
     background-color: #2F4858;     
     grid-column: 1 / 5;
     grid-row: 5 / 6;    
+}
+
+#dialog-new-todo {
+    border: 2px outset #80b3d1;
+    border-radius: 5px;
+    box-shadow: -1px 2px 3px 1px #9aafb9;   
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: absolute; 
+    top: 60px;
+    left: calc(100% - 200px - 60px);
+}
+
+dialog h2 {
+    border-bottom: 1px solid black;
+}
+
+dialog form {    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;    
+}
+
+dialog form > div {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;        
+}
+
+dialog button {
+    background-color: azure;
+    border-color: #80b3d1;   
+    border-radius: 5px;
+    padding: 2px 6px 2px 6px;    
+}
+
+dialog input {    
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 1.4rem;
+}
+
+dialog textarea {
+    max-width: 95%;
+    min-width: 95%;
+    min-height: 1.4rem;
+    max-height: 200px;
+    padding: 5px;
 }

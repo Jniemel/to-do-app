@@ -3,7 +3,7 @@ import minus from './images/minus.png';
 import { addCollection, removeCollection } from './collections';
 import { addTodo, removeTodo } from './todo';
 import { validateInput } from './validate';
-import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, addEmptyDiv, openTodo, openCollection, clearContentArea  } from './dom';
+import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, addEmptyDiv, openTodo, openCollection, clearContentArea, openNewTodoDialog } from './dom';
 
 // references
 const collectionControls = document.querySelector('#collection-controls');
@@ -118,6 +118,9 @@ function createNewTodo() {
         // find the last clicked collection which will hold the new to-do
         let collection = collections.find(element => element["name"] === lastClickedCollection);
         
+        openNewTodoDialog();
+
+        /*
         // prompt & validate the new to-dos subject
         const input = prompt('Subject of the new to-do: ');
         const validation = validateInput(input, collection["todos"], "subject");
@@ -147,7 +150,8 @@ function createNewTodo() {
 
         } else if (validation != 'valid' && validation != 'null') {
             alert('Adding the new to-do failed.\nreason: ' + validation);
-        }       
+        }
+        */       
     }
 }
 
