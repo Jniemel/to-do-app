@@ -1,48 +1,17 @@
 import plus from './images/plus.png';
 import minus from './images/minus.png';
 import { addCollection, removeCollection } from './collections';
-import { addTodo } from './todo';
+import { addTodo, removeTodo } from './todo';
+import { validateInput } from './validate';
 import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, openTodo, openCollection, clearContentArea  } from './dom';
 
 // references
 const collectionControls = document.querySelector('#collection-controls');
 export const collectionsContainer = document.querySelector('#collections');
-const rightSide = document.querySelector('#right-side');
+const todoControls = document.querySelector('#to-do-controls');
 
 // init array for collections
 export let collections = [];
-
-// check input is not null, undefined or empty and is not duplicate
-// if array and key parameters left empty, no duplicate check
-function validateInput(input, array = [], key = '') {
-
-    if (input === null) {
-        return 'null';
-    } else if (input === undefined) {
-        return 'undefined';
-    } else {        
-        if (input.length === 0) {
-            return 'empty';            
-        } else if (input.length != 0 && input.trim().length === 0) {
-            return 'whitespace'
-        } else {            
-            // check if name already exists
-            let duplicate = false;
-            if (array != [] && key != '') {
-                array.forEach((element) => {
-                    if (element[key].toLocaleLowerCase() === input.trim().toLocaleLowerCase()) {
-                        duplicate = true;                            
-                    }           
-                });
-            }            
-            if (duplicate) {
-                return 'duplicate';
-            } else {
-                return 'valid';
-            }
-        }          
-    }
-}
 
 // create a new collection and display it on the page
 function createNewCollection() {
@@ -82,10 +51,9 @@ export function open(e) {
         });              
         
     // if a to-do is clicked
-    } else if (e.target.classList[0] === 'sub-txt' && e.target.parentNode.id != lastClickedId) { 
+    } else if (e.target.classList[0] === 'todo-header-subject' && e.target.parentNode.id != lastClickedId) { 
         
-        lastClickedCollection = e.target.closest('.collection').id;
-        console.log(lastClickedCollection);        
+        lastClickedCollection = e.target.closest('.collection').id;                
         lastClickedId = e.target.closest('.to-do').id;        
         changeLastClicked = true;        
         
@@ -147,8 +115,7 @@ function createNewTodo() {
     if (lastClickedCollection.length != 0) {
         
         // find the last clicked collection which will hold the new to-do
-        let collection = collections.find(element => element["name"] === lastClickedCollection);   
-        console.log(collection);
+        let collection = collections.find(element => element["name"] === lastClickedCollection);
         
         // prompt & validate the new to-dos subject
         let input = prompt('Subject of the new to-do: ');
@@ -157,7 +124,8 @@ function createNewTodo() {
         if (validation === 'valid') {            
             // init a new to-do and add into collection  
             let todo = Array(4).fill('');                  
-            todo[0] = input.trim()            
+            todo[0] = input.trim()
+            console.log(todo[0]);            
             addTodo(collection, todo);
 
             const appendTo = collectionsContainer.querySelector('#' + lastClickedCollection);            
@@ -180,6 +148,24 @@ function createNewTodo() {
     }
 }
 
+function deleteTodo() {
+    if (lastClickedClass === 'todo-header-subject') {
+        
+        // find the last clicked collection which the to-do is to be removed from
+        let collection = collections.find(element => element["name"] === lastClickedCollection);
+
+        // get the div that holds the to-do 
+        let toDelete = document.querySelector('.todo-header-subject[data="last-clicked"]').closest('.to-do');
+        
+        // remove to-do from collection and page
+        removeTodo(lastClickedId, collection["todos"]);
+        toDelete.remove()
+
+        // refrest content area
+        openCollection(collection);
+    }
+}
+
 // wip
 function editTodo() {
     let toEdit = prompt('To-do to edit:');
@@ -199,7 +185,8 @@ export function init() {
     collectionControls.appendChild(createButton('collection-control-btn', '', deleteCollection, minus))
 
     // to-do controls
-    rightSide.appendChild(createButton('test-btn', 'add-todo', createNewTodo));
+    todoControls.appendChild(createButton('', '', createNewTodo, plus));
+    todoControls.appendChild(createButton('', '', deleteTodo, minus));
 
     
 }

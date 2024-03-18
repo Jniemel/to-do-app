@@ -7,9 +7,11 @@ import check from './images/check.png';
 export function createButton(cssClass, text, func, path = '') {
 
     const btn = document.createElement('button');
-    btn.classList.add(cssClass);
+    if (cssClass != '') {
+        btn.classList.add(cssClass);
+    }    
     btn.textContent = text;    
-    if (path.length != 0) {
+    if (path != '') {
         btn.style.backgroundImage = "url('" + path + "')";
     }    
     btn.addEventListener("click", func); 
@@ -46,7 +48,7 @@ export function createTodoDiv(todo, listenerFunction) {
      
      const todoDiv = document.createElement('div');
      todoDiv.classList.add('to-do');
-     todoDiv.id = todo['subject'];
+     todoDiv.id = todo["subject"];
 
      // add priority icon according to to-do priority or
      // if to-do done, add done icon
@@ -62,7 +64,7 @@ export function createTodoDiv(todo, listenerFunction) {
      }
      // add subject, shorten if > 50 characters & add event listener      
      const sub = document.createElement('p');
-     sub.classList.add('sub-txt'); 
+     sub.classList.add('todo-header-subject'); 
      if (todo["subject"].length > 50) {
         sub.textContent = todo.short();
      } else {
