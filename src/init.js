@@ -60,7 +60,7 @@ function open(e) {
         
         // open the clicked to-do
         collections.forEach((collection) => {
-            if (collection["name"] === lastClickedCollection.id) {                
+            if (collection["name"] === lastClickedCollection) {                
                 collection.todos.forEach((todo) => {
                     if (todo["subject"] === lastClickedId) {
                         openTodo(todo);
@@ -141,6 +141,9 @@ function createNewTodo() {
             appendTo.appendChild(createTodoDiv(collection["todos"][collection["todos"].length - 1], open))
             // refresh content area
             openCollection(collection);
+            // refresh progress
+            const progressDiv = appendTo.querySelector('.collection-header .progress-div');
+            progressDiv.textContent = collection.progress();
 
         } else if (validation != 'valid' && validation != 'null') {
             alert('Adding the new to-do failed.\nreason: ' + validation);
@@ -172,6 +175,9 @@ function deleteTodo() {
 
                 // refrest content area
                 openCollection(collection);
+                // refresh progress
+                const progressDiv = collectionDiv.querySelector('.collection-header .progress-div');
+                progressDiv.textContent = collection.progress();
                 
                 // if collection is left empty, add empty text
                 if (collection["todos"].length === 0) {

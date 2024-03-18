@@ -150,11 +150,16 @@ export function clearContentArea() {
     });    
 }
 
+function focus() {
+    console.log('click');
+}
+
 // append to-do's details and return as a div
 function todoDetails(todo) {   
 
     const div = document.createElement('div');
     div.classList.add('to-do-details');
+    div.addEventListener('click', focus);
 
     const sub = document.createElement('h2');
     sub.classList.add('to-do-subject');
@@ -204,7 +209,7 @@ function todoDetails(todo) {
     } else {
         status.textContent = "Status: Not done";
         status.style.fontWeight = '400'; 
-        status.style.color = (todo["priority"] === 0) ? 'darkgrey' : 'darkred';   
+        status.style.color = (todo["priority"] == 0) ? 'darkgrey' : 'darkred';   
     }  
 
     div.append(sub, date, prio, status, notesHeader, notes);

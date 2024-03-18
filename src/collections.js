@@ -10,14 +10,19 @@ function createCollection(collectionName) {
     function progress() {
         // calculate the collections progress from # of done to-do's
         let total = todos.length;
-        let done = 0;
-        for (let i = 0; i < total; i++) {
-            if (todos[i].getStatus()) {
-                done += 1;
+        if (total != 0) {
+            let done = 0;
+            for (let i = 0; i < total; i++) {
+                if (todos[i].getStatus()) {
+                    done += 1;
+                }
             }
+            let percent = Math.trunc((done / total) * 100);
+            return  percent + '%';
+        } else {
+            return '';
         }
-        let percent = Math.trunc((done / total) * 100);
-        return  percent + "%";
+
     }
 
     return {  name, todos, clearTodos, short, progress };
