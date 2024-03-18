@@ -107,7 +107,6 @@ export function createCollectionDiv(collection, listenerFunction) {
     // if collection has to-dos, append to-do subjects
     // and display them under collection header
     if (collection.todos.length > 0) {
-
         // create container for to-do's
         const todoDiv = document.createElement('div');
         todoDiv.classList.add('todo-div');
@@ -122,15 +121,20 @@ export function createCollectionDiv(collection, listenerFunction) {
         progressDiv.textContent = collection.progress();
         
     } else {
-
-        // if no todos, add empty text
-        const empty = document.createElement('div');
-        empty.classList.add('empty');
-        empty.textContent = "This collection is empty...";
-        collectionDiv.appendChild(empty);
+        // if no todos, add empty div
+        collectionDiv.appendChild(addEmptyDiv());
     }
     
     return collectionDiv;
+}
+
+export function addEmptyDiv() {
+        
+        const div = document.createElement('div');
+        div.classList.add('empty');
+        div.textContent = "This collection is empty...";
+        
+        return div;
 }
 
 // ------------ content area ------------

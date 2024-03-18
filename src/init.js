@@ -3,17 +3,17 @@ import minus from './images/minus.png';
 import { addCollection, removeCollection } from './collections';
 import { addTodo, removeTodo } from './todo';
 import { validateInput } from './validate';
-import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, openTodo, openCollection, clearContentArea  } from './dom';
+import { createButton, clearCollectionDiv, createTodoDiv, createCollectionDiv, addEmptyDiv, openTodo, openCollection, clearContentArea  } from './dom';
 
 // references
 const collectionControls = document.querySelector('#collection-controls');
-export const collectionsContainer = document.querySelector('#collections');
+const collectionsContainer = document.querySelector('#collections');
 const todoControls = document.querySelector('#to-do-controls');
 
 // init array for collections
 export let collections = [];
 
-// create a new collection and display it on the page
+// button function: create a new collection and display it on the page
 function createNewCollection() {
 
     let input = prompt('Name of the new collection:');
@@ -33,7 +33,8 @@ export let lastClickedId = '';
 export let lastClickedCollection = '';
 export let lastClickedClass = '';
 
-export function open(e) {    
+// button function: open collection / to-do
+function open(e) {    
     
     let changeLastClicked = false;
 
@@ -83,7 +84,7 @@ export function open(e) {
     } 
 }
 
-// delete collection
+// button function: delete collection
 function deleteCollection() {
     
     // check if collection was last clicked element
@@ -109,7 +110,7 @@ function deleteCollection() {
     } 
 }
 
-// creat a new to do and add it to active (lastClicked) collection
+// button function: create a new to do and add it to active (lastClicked) collection
 function createNewTodo() {
 
     if (lastClickedCollection.length != 0) {
@@ -118,14 +119,13 @@ function createNewTodo() {
         let collection = collections.find(element => element["name"] === lastClickedCollection);
         
         // prompt & validate the new to-dos subject
-        let input = prompt('Subject of the new to-do: ');
-        let validation = validateInput(input, collection["todos"], "subject");
+        const input = prompt('Subject of the new to-do: ');
+        const validation = validateInput(input, collection["todos"], "subject");
         
         if (validation === 'valid') {            
             // init a new to-do and add into collection  
             let todo = Array(4).fill('');                  
-            todo[0] = input.trim()
-            console.log(todo[0]);            
+            todo[0] = input.trim()                        
             addTodo(collection, todo);
 
             const appendTo = collectionsContainer.querySelector('#' + lastClickedCollection);            
@@ -148,22 +148,42 @@ function createNewTodo() {
     }
 }
 
+// button function: delete active (last clicked) to-do
 function deleteTodo() {
     if (lastClickedClass === 'todo-header-subject') {
+        // confirmation, has to match "yes", no case sensitivity
+        const confirm = prompt('Are you sure you want to delete the to-do named: "' + lastClickedId + '"?\nConfirm by writing "yes"');
         
-        // find the last clicked collection which the to-do is to be removed from
-        let collection = collections.find(element => element["name"] === lastClickedCollection);
+        if (confirm != undefined && confirm != null) {
+            if (confirm.toLocaleLowerCase() === 'yes') {
+                // find the last clicked collection which the to-do is to be removed from
+                const collection = collections.find(element => element["name"] === lastClickedCollection);
+                const collectionDiv = document.querySelector('.collection#' + lastClickedCollection);
 
-        // get the div that holds the to-do 
-        let toDelete = document.querySelector('.todo-header-subject[data="last-clicked"]').closest('.to-do');
-        
-        // remove to-do from collection and page
-        removeTodo(lastClickedId, collection["todos"]);
-        toDelete.remove()
+                // get the div that holds the to-do 
+                const toDelete = document.querySelector('.todo-header-subject[data="last-clicked"]').closest('.to-do');
+                
+                // remove to-do from collection and page
+                removeTodo(lastClickedId, collection["todos"]);
+                toDelete.remove()
+                lastClickedCollection = '';
+                lastClickedClass = '';
+                lastClickedId = '';
 
-        // refrest content area
-        openCollection(collection);
-    }
+                // refrest content area
+                openCollection(collection);
+                
+                // if collection is left empty, add empty text
+                if (collection["todos"].length === 0) {
+                    collectionDiv.appendChild(addEmptyDiv());
+                }
+            } else {
+                alert('Confirmation did not match!');
+            }
+        }
+    } else {
+        alert('No to-do selected!');
+    } 
 }
 
 // wip
@@ -187,6 +207,29 @@ export function init() {
     // to-do controls
     todoControls.appendChild(createButton('', '', createNewTodo, plus));
     todoControls.appendChild(createButton('', '', deleteTodo, minus));
-
     
 }
+
+// EXAMPLES ---------------
+addCollection('Studies', collections);
+addCollection('Hobbies', collections);
+addCollection('Work', collections);
+addCollection('Misc', collections);
+addCollection('Secret-project', collections);
+/*
+collections[0].addTodo(createTodo("Study math test", "10.5.2024", "Calculus", 2));
+collections[0].addTodo(createTodo("group project", "20.5.2024", "Finish the presentation...", 2));
+collections[0].todos[0].editStatus();
+collections[1].addTodo(createTodo("Learn programming", "", "Slow and steady...", 0));
+collections[1].addTodo(createTodo("Get new running shoes", "", "Nikes?", 1));
+collections[3].addTodo(createTodo("Car oil change", "30.3.2024", "change filters", 1));
+collections[3].addTodo(createTodo("Dentist appointment", "", "", 1));
+collections[3].todos[1].editStatus();
+collections[3].addTodo(createTodo("Book flights, hotel, train, another hotel, villa, more flights, more hotels, motels, all around the world", "1.6.2024", "", 1));
+collections[4].addTodo(createTodo("Secrets", "25.5.2025", "", 1));
+*/
+for (let i = 0; i < collections.length; i++) {    
+    collectionsContainer.appendChild(createCollectionDiv(collections[i], open));
+}
+// EXAMPLES ---------------
+
