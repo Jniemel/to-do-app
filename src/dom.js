@@ -156,17 +156,23 @@ function todoDetails(todo) {
     const div = document.createElement('div');
     div.classList.add('to-do-details');
 
-    const sub = document.createElement('p');
+    const sub = document.createElement('h2');
     sub.classList.add('to-do-subject');
     sub.textContent = todo["subject"];
 
-    const date = document.createElement('p');
+    const date = document.createElement('h3');
     date.classList.add('to-do-date');
-    date.textContent = todo["date"];
+    date.textContent = 'Due date: ' + todo["date"];
 
+    const notesHeader = document.createElement('h4');
+    notesHeader.textContent = 'Notes:'
     const notes = document.createElement('p');
     notes.classList.add('to-do-notes');
-    notes.textContent = todo["notes"];
+    if (todo["notes"] === '') {
+        notes.textContent = 'No additional information';
+    } else {
+        notes.textContent = todo["notes"];
+    }    
 
     const prio = document.createElement('p');
     prio.classList.add('to-do-prio');
@@ -175,22 +181,33 @@ function todoDetails(todo) {
 
         case 1:
             prio.textContent = "Priority: Medium";
+            prio.style.color = 'darkorange';
             break;
 
         case 2:
            prio.textContent = "Priority: High";
+           prio.style.color = 'darkred';
            break;
 
         default:
-            prio.textContent = "Priority: Low";         
+            prio.textContent = "Priority: Low";
+            prio.style.color = 'darkgrey';  
     }
 
-    prio.textContent = todo["priority"]; 
     const status = document.createElement('p');
-    status.classList.add('to-do-status');
-    status.textContent = todo["status"] ? "Status: Done" : "Status: Not done";
+    status.classList.add('to-do-status'); 
+    if (todo.getStatus()) {
+        status.textContent = "Status: Done";
+        status.style.color = "Darkgreen";
+        status.style.fontWeight = '700';
+        prio.style.color = 'darkgrey'; 
+    } else {
+        status.textContent = "Status: Not done";
+        status.style.fontWeight = '400'; 
+        status.style.color = (todo["priority"] === 0) ? 'darkgrey' : 'darkred';   
+    }  
 
-    div.append(sub, date, notes, prio, status);
+    div.append(sub, date, prio, status, notesHeader, notes);
 
     return div;
 }
