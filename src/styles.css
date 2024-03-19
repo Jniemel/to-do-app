@@ -157,6 +157,21 @@ body {
     padding: 0 3px 0 3px;         
 }
 
+.collection-header button {
+    background-color: azure;
+    border: 2px solid #80b3d1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30% 38%;    
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 6px 0px 6px;
+    margin-bottom: 2px;
+    font-size: 1.1rem;
+    font-weight: 800;    
+}
+
 [data="last-clicked-collection"] {
     border: 2px dashed #80b3d1;
     color: #80b3d1; 
@@ -173,6 +188,10 @@ body {
 .todo-div {
     display: flex;
     flex-direction: column;    
+}
+
+[minimize="yes"] .todo-div {
+    display: none;
 }
 
 .to-do {   
@@ -205,6 +224,7 @@ body {
 
 .to-do div {
     min-width: 30px;
+    
 }
 
 .clock {
@@ -241,6 +261,10 @@ body {
     color: lightslategray;
     font-style: italic;
     padding: 3px 0 0 3px;
+}
+
+[minimize="yes"] .empty {
+    display: none;
 }
 
 #content {

@@ -4,7 +4,7 @@ import snail from './images/snail.png';
 import check from './images/check.png';
 
 // create a button
-export function createButton(cssClass, text, func, path = '') {
+export function createButton(cssClass, text, path = '') {
 
     const btn = document.createElement('button');
     if (cssClass != '') {
@@ -13,9 +13,8 @@ export function createButton(cssClass, text, func, path = '') {
     btn.textContent = text;    
     if (path != '') {
         btn.style.backgroundImage = "url('" + path + "')";
-    }    
-    btn.addEventListener("click", func); 
-
+    }
+    
     return btn;
 }
 
@@ -80,8 +79,8 @@ export function createTodoDiv(todo, listenerFunction) {
      return todoDiv;
 }
 
-// create a div for a collection
-export function createCollectionDiv(collection, collectionListener, todoListener) {
+// create a collection div
+export function createCollectionDiv(collection, collectionListener, todoListener, minMaxListener) {
 
     // create div & header 
     const collectionDiv = document.createElement('div');
@@ -92,7 +91,7 @@ export function createCollectionDiv(collection, collectionListener, todoListener
     collectionHeader.classList.add('collection-header');
     collectionDiv.appendChild(collectionHeader);
 
-    // add header text and progress to header
+    // add header text, progress and min/max-button to header
     const headerTxt = document.createElement('p');
     headerTxt.classList.add('collection-header-txt');
     if (collection["name"].length > 17) {    
@@ -102,7 +101,10 @@ export function createCollectionDiv(collection, collectionListener, todoListener
     }    
     const progressDiv = document.createElement('div');
     progressDiv.classList.add('progress-div');
-    collectionHeader.append(headerTxt, progressDiv);
+    const minMax = document.createElement('button');
+    minMax.textContent = '-';
+    minMax.addEventListener('click', minMaxListener);
+    collectionHeader.append(headerTxt, progressDiv, minMax);
 
     /* 
     // add button and progress to header
