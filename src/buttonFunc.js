@@ -5,8 +5,10 @@ import { validateInput } from "./validate";
 import { collections } from "./init";
 
 
-// create a new collection and display it on the page
+
 const collectionsContainer = document.querySelector('#collections');
+
+// create a new collection and display it on the page
 export function createNewCollection() {
 
     let input = prompt('Name of the new collection:');

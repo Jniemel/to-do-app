@@ -105,22 +105,7 @@ export function createCollectionDiv(collection, collectionListener, todoListener
     minMax.textContent = '-';
     minMax.addEventListener('click', minMaxListener);
     collectionHeader.append(headerTxt, progressDiv, minMax);
-
-    /* 
-    // add button and progress to header
-    const headerBtn = document.createElement('button');
-    headerBtn.classList.add('collection-btn');
-    if (collection["name"].length > 17) {    
-        headerBtn.textContent = collection.short();
-    } else {
-        headerBtn.textContent = collection["name"];
-    }    
-    headerBtn.addEventListener('click', listenerFunction);
-    const progressDiv = document.createElement('div');
-    progressDiv.classList.add('progress-div');
-    collectionHeader.append(headerBtn, progressDiv);
-    */
-
+    
     // if collection has to-dos, append to-do subjects
     // and display them under collection header
     if (collection.todos.length > 0) {
