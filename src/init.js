@@ -27,79 +27,92 @@ function createNewCollection() {
     }
 }
 
-// save last clicked collection / to-do and
-// show the details in content area
-export let lastClickedId = '';
-export let lastClickedCollection = '';
-export let lastClickedClass = '';
+let lastClickedCollection = '';
+let lastClickedTodo = '';
 
-// button function: open collection / to-do
-function open(e) {    
+// activate collection
+function activateCollection(e) {
     
-    let changeLastClicked = false;
-
-    // if a collection is clicked
-    if (e.target.classList[0] === 'collection-btn' && e.target.parentNode.parentNode.id != lastClickedId) {
+    // check if different collection clicked
+    const clicked = e.target.closest('.collection');
+    if (clicked.id != lastClickedCollection) {
         
-        lastClickedCollection = lastClickedId = e.target.closest('.collection').id;        
-        changeLastClicked = true;
-
-        // open the clicked collection
+        // save and open the clicked collection
+        lastClickedCollection = clicked.id;
+        lastClickedTodo = '';        
         collections.forEach((collection) => {
-            if (collection["name"] === lastClickedId) {                
+            if (collection["name"] === lastClickedCollection) {                
                 openCollection(collection);
             }
         });              
-        
-    // if a to-do is clicked
-    } else if (e.target.classList[0] === 'todo-header-subject' && e.target.parentNode.id != lastClickedId) { 
-        
-        lastClickedCollection = e.target.closest('.collection').id;                
-        lastClickedId = e.target.closest('.to-do').id;        
-        changeLastClicked = true;        
-        
-        // open the clicked to-do
-        collections.forEach((collection) => {
-            if (collection["name"] === lastClickedCollection) {                
-                collection.todos.forEach((todo) => {
-                    if (todo["subject"] === lastClickedId) {
-                        openTodo(todo);
-                    }
-                });                
-            }
-        });       
-    }
-    
-    if (changeLastClicked) {
-        // remove 'last clicked' attribute if new button is clicked
-        const divs = collectionsContainer.querySelectorAll('.collection button, .to-do p');
-        divs.forEach((btn) => {
-            if (btn.getAttribute('data') === 'last-clicked') {            
-                btn.removeAttribute('data');            
+
+        // remove 'last clicked' attribute from previously active collection & to-do
+        const divs = document.querySelectorAll('.collection, .to-do');
+        divs.forEach((div) => {
+            if (div.getAttribute('data') === 'last-clicked-collection' || div.getAttribute('data') === 'last-clicked-todo') {            
+                div.removeAttribute('data');            
             }
         });
-        // set 'last clicked' attribute to button that was clicked
-        e.target.setAttribute('data', 'last-clicked')
-        lastClickedClass = e.target.classList[0];
-    } 
+
+        // set 'last clicked' attribute to collection that was clicked
+        clicked.setAttribute('data', 'last-clicked-collection')                      
+    }
+}
+
+
+
+// activate to-do
+function activateTodo(e) {
+
+    let collectionActivationDelay = 50;
+    setTimeout(function() {
+        
+        // check if different to-do clicked
+        const clicked = e.target.closest('.to-do');   
+        if (clicked.id != lastClickedTodo) {
+                
+            // save and open the clicked to-do
+            lastClickedTodo = clicked.id;
+            collections.forEach((collection) => {
+                if (collection["name"] === lastClickedCollection) {                
+                    collection.todos.forEach((todo) => {
+                        if (todo["subject"] === lastClickedTodo) {
+                            openTodo(todo);
+                        }
+                    });                
+                }
+            });
+            
+            // remove 'last clicked' attribute if new button is clicked
+            const divs = document.querySelectorAll('.to-do');
+            divs.forEach((div) => {
+                if (div.getAttribute('data') === 'last-clicked-todo') {            
+                    div.removeAttribute('data');            
+                }
+            });
+
+            // set 'last clicked' attribute to todo that was clicked
+            clicked.setAttribute('data', 'last-clicked-todo')        
+        }
+    }, collectionActivationDelay);    
 }
 
 // button function: delete collection
 function deleteCollection() {
     
-    // check if collection was last clicked element
-    if (lastClickedClass === 'collection-btn' && lastClickedId.length != 0 && lastClickedId != null && lastClickedId != undefined) {
+    // check if active collection exists
+    if (lastClickedCollection != '') {
 
         // confirmation, has to match "yes", no case sensitivity
-        const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClickedId + '"?\nConfirm by writing "yes"');
-        
+        const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClickedCollection + '"?\nConfirm by writing "yes"');
         if (confirm != undefined && confirm != null) {
+
+            // check confirmation, proceed to remove the collection
             if (confirm.toLocaleLowerCase() === 'yes') {
                 removeCollection(lastClickedId, collections);
-                clearCollectionDiv(lastClickedId);
-                lastClickedClass = '';
+                clearCollectionDiv(lastClickedId);                
                 lastClickedCollection = '';
-                lastClickedId = '';
+                lastClickedTodo = '';                
                 clearContentArea();
             } else {
                 alert('Confirmation did not match!');
@@ -157,28 +170,32 @@ function createNewTodo() {
 
 // button function: delete active (last clicked) to-do
 function deleteTodo() {
-    if (lastClickedClass === 'todo-header-subject') {
+
+    // check if active to-do exists
+    if (lastClickedTodo != '') {
+
         // confirmation, has to match "yes", no case sensitivity
-        const confirm = prompt('Are you sure you want to delete the to-do named: "' + lastClickedId + '"?\nConfirm by writing "yes"');
-        
+        const confirm = prompt('Are you sure you want to delete the to-do named: "' + lastClickedTodo + '"?\nConfirm by writing "yes"');    
         if (confirm != undefined && confirm != null) {
+
+            // check confirmation, proceed to remove to-do
             if (confirm.toLocaleLowerCase() === 'yes') {
+
                 // find the last clicked collection which the to-do is to be removed from
                 const collection = collections.find(element => element["name"] === lastClickedCollection);
                 const collectionDiv = document.querySelector('.collection#' + lastClickedCollection);
 
                 // get the div that holds the to-do 
-                const toDelete = document.querySelector('.todo-header-subject[data="last-clicked"]').closest('.to-do');
+                const toDelete = document.querySelector('[data=last-clicked-todo]');                
                 
                 // remove to-do from collection and page
-                removeTodo(lastClickedId, collection["todos"]);
-                toDelete.remove()
-                lastClickedCollection = '';
-                lastClickedClass = '';
-                lastClickedId = '';
+                removeTodo(lastClickedTodo, collection["todos"]);
+                toDelete.remove();                
+                lastClickedTodo = ''; 
 
                 // refrest content area
                 openCollection(collection);
+
                 // refresh progress
                 const progressDiv = collectionDiv.querySelector('.collection-header .progress-div');
                 progressDiv.textContent = collection.progress();
@@ -243,7 +260,7 @@ collections[3].addTodo(createTodo("Book flights, hotel, train, another hotel, vi
 collections[4].addTodo(createTodo("Secrets", "25.5.2025", "", 1));
 */
 for (let i = 0; i < collections.length; i++) {    
-    collectionsContainer.appendChild(createCollectionDiv(collections[i], open));
+    collectionsContainer.appendChild(createCollectionDiv(collections[i], activateCollection, activateTodo));
 }
 // EXAMPLES ---------------
 

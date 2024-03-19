@@ -81,16 +81,30 @@ export function createTodoDiv(todo, listenerFunction) {
 }
 
 // create a div for a collection
-export function createCollectionDiv(collection, listenerFunction) {
+export function createCollectionDiv(collection, collectionListener, todoListener) {
 
     // create div & header 
     const collectionDiv = document.createElement('div');
     collectionDiv.classList.add('collection');    
     collectionDiv.id = collection["name"];
+    collectionDiv.addEventListener('click', collectionListener);
     const collectionHeader = document.createElement('div');
     collectionHeader.classList.add('collection-header');
     collectionDiv.appendChild(collectionHeader);
 
+    // add header text and progress to header
+    const headerTxt = document.createElement('p');
+    headerTxt.classList.add('collection-header-txt');
+    if (collection["name"].length > 17) {    
+        headerTxt.textContent = collection.short();
+    } else {
+        headerTxt.textContent = collection["name"];
+    }    
+    const progressDiv = document.createElement('div');
+    progressDiv.classList.add('progress-div');
+    collectionHeader.append(headerTxt, progressDiv);
+
+    /* 
     // add button and progress to header
     const headerBtn = document.createElement('button');
     headerBtn.classList.add('collection-btn');
@@ -103,6 +117,7 @@ export function createCollectionDiv(collection, listenerFunction) {
     const progressDiv = document.createElement('div');
     progressDiv.classList.add('progress-div');
     collectionHeader.append(headerBtn, progressDiv);
+    */
 
     // if collection has to-dos, append to-do subjects
     // and display them under collection header
@@ -114,7 +129,7 @@ export function createCollectionDiv(collection, listenerFunction) {
         
         // display the collections to-dos
         for (let i = 0; i < collection.todos.length; i++) {            
-            todoDiv.appendChild(createTodoDiv(collection.todos[i], listenerFunction));
+            todoDiv.appendChild(createTodoDiv(collection.todos[i], todoListener));
         }
         
         // calculate collection progress
@@ -239,3 +254,4 @@ const newTodoDialog = document.querySelector('#dialog-new-todo');
 export function openNewTodoDialog() {
     newTodoDialog.showModal();
 }
+
