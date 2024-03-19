@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo } from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openNewTodoDialog} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 
@@ -86,10 +86,13 @@ export function minimizeCollection(e) {
     e.stopImmediatePropagation();    
     const minimize = e.target.closest('.collection');
     const progressDiv = minimize.querySelector('.collection-header .progress-div');
-    
+    const minButton = minimize.querySelector('.collection-header button');
+
     // check if collection is minimized
     if (minimize.getAttribute('minimize') != 'yes') {
         minimize.setAttribute('minimize', 'yes');
+        const minButton = minimize.querySelector('.collection-header button');
+        minButton.textContent = '+';
 
         // display amount of hidden and completed todos in header
         // if collection is not empty
@@ -111,6 +114,7 @@ export function minimizeCollection(e) {
         minimize.removeAttribute('minimize');
         const collection = collections.find(element => element["name"] === minimize.id);
         progressDiv.textContent = collection.progress();
+        minButton.textContent = '-';
     }
 }
 
