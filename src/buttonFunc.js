@@ -150,7 +150,7 @@ export function activateTodo(e) {
     }, collectionActivationDelay);    
 }
 
-// button function: create a new to do and add it to active (lastClicked) collection
+// create a new to do and add it to active (lastClicked) collection
 export function createNewTodo() {
 
     if (lastClickedCollection.length != 0) {
@@ -195,8 +195,8 @@ export function createNewTodo() {
     }
 }
 
-// button function: delete active (last clicked) to-do
-export function deleteTodo(collections) {
+// delete active (last clicked) to-do
+export function deleteTodo() {
 
     // check if active to-do exists
     if (lastClickedTodo != '') {
@@ -224,8 +224,10 @@ export function deleteTodo(collections) {
                 openCollection(collection);
 
                 // refresh progress
-                const progressDiv = collectionDiv.querySelector('.collection-header .progress-div');
-                progressDiv.textContent = collection.progress();
+                if (collectionDiv.getAttribute('minimize') != 'yes') {
+                    const progressDiv = collectionDiv.querySelector('.collection-header .progress-div');
+                    progressDiv.textContent = collection.progress();
+                }
                 
                 // if collection is left empty, add empty text
                 if (collection["todos"].length === 0) {

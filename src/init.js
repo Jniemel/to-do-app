@@ -1,6 +1,6 @@
 import plus from './images/plus.png';
 import minus from './images/minus.png';
-import { addCollection } from './collections';
+import { addCollection, removeCollection } from './collections';
 import { addTodo } from './todo';
 import { createNewCollection, deleteCollection, activateCollection, createNewTodo, deleteTodo, activateTodo, minimizeCollection } from './buttonFunc';
 import { createButton, createCollectionDiv } from './dom';
@@ -13,17 +13,13 @@ export function init() {
 
     // add & remove collection buttons
     const collectionControls = document.querySelector('#collection-controls');
-    const addCollectionBtn = collectionControls.appendChild(createButton('collection-control-btn', '', plus));
-    addCollectionBtn.addEventListener('click', (e) => {
-        console.log('ok');
-    });
-
-    collectionControls.appendChild(createButton('collection-control-btn', '', minus))
+    const addCollectionBtn = collectionControls.appendChild(createButton('collection-control-btn', '', createNewCollection, plus));
+    const removeCollectionBtn = collectionControls.appendChild(createButton('collection-control-btn', '', deleteCollection, minus))
 
     // to-do controls
     const todoControls = document.querySelector('#to-do-controls');
-    todoControls.appendChild(createButton('', '', plus));
-    todoControls.appendChild(createButton('', '', minus));
+    todoControls.appendChild(createButton('', '', createNewTodo, plus));
+    todoControls.appendChild(createButton('', '', deleteTodo, minus));
     
 }
 

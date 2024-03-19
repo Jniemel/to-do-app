@@ -4,7 +4,7 @@ import snail from './images/snail.png';
 import check from './images/check.png';
 
 // create a button
-export function createButton(cssClass, text, path = '') {
+export function createButton(cssClass, text, func, path = '') {
 
     const btn = document.createElement('button');
     if (cssClass != '') {
@@ -14,7 +14,8 @@ export function createButton(cssClass, text, path = '') {
     if (path != '') {
         btn.style.backgroundImage = "url('" + path + "')";
     }
-    
+    btn.addEventListener('click', func);
+
     return btn;
 }
 
