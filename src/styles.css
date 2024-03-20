@@ -77,15 +77,16 @@ body {
 
 #period div {
     display: flex;
-    justify-content: space-between;    
+    justify-content: space-between;
+    gap: 15px;    
 }
 
 #period div .period-btn {
-    width: 75%;    
+    flex-grow: 1;    
 }
 
 #period div .prio-btn {
-    width: 18%;
+    width: 50px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 75%;      
