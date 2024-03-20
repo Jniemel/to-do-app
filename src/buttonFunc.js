@@ -169,6 +169,32 @@ export function activateTodo(e) {
     });
 }
 
+export function focus(e) {
+    
+    let todoDiv;
+    lastClickedTodo = e.target.querySelector('.to-do-subject').textContent;
+    const divs = document.querySelectorAll('.to-do');
+    divs.forEach(div => {
+        if (div.id === lastClickedTodo) {
+            todoDiv = div;
+        }
+    });
+
+    // set 'last clicked' attribute to todo that was clicked
+    todoDiv.setAttribute('data', 'last-clicked-todo');   
+    
+    // open the to-do details to content area
+    collections.forEach((collection) => {
+        if (collection["name"] === lastClickedCollection) {                
+            collection.todos.forEach((todo) => {
+                if (todo["subject"] === lastClickedTodo) {
+                    openTodo(todo);
+                }
+            });                
+        }
+    });
+}
+
 // open the dialog for creating a new to-do
 export function createNewTodo() {
 

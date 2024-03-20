@@ -2,7 +2,7 @@ import clock from './images/clock.png';
 import circle from './images/circle.png';
 import snail from './images/snail.png';
 import check from './images/check.png';
-import { activateCollection, activateTodo, minimizeCollection } from './buttonFunc';
+import { activateCollection, activateTodo, minimizeCollection , focus} from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -154,10 +154,6 @@ export function clearContentArea() {
     });    
 }
 
-function focus() {
-    console.log('click');
-}
-
 // append to-do's details and return as a div
 function todoDetails(todo) {   
 
@@ -217,7 +213,7 @@ function todoDetails(todo) {
     }  
 
     div.append(sub, date, prio, status, notesHeader, notes);
-
+    
     return div;
 }
 
