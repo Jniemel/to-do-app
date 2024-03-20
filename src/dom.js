@@ -20,6 +20,28 @@ export function createButton(cssClass, text, func, path = '') {
     return btn;
 }
 
+// set button image
+export function setButtonImage(btn, image) {
+
+    let path;
+
+    switch (image) {
+        case 'clock':
+            path = clock;
+            break;    
+        case 'circle':
+            path = circle;
+            break;
+        case 'snail':
+            path = snail;
+            break;
+        case 'check':            
+            path = check;
+    }
+
+    btn.style.backgroundImage = "url('" + path + "')";
+}
+
 // ------------ collection area ------------
 
 // clear collection div 

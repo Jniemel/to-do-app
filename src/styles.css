@@ -72,19 +72,40 @@ body {
     grid-row: 2 / 3;    
     flex-direction: column;
     justify-content: space-between;    
-    padding: 0.8em 0 0.8em 0;                
+    padding: 0.8em 0 0.8em 0;             
+}
+
+#period div {
+    display: flex;
+    justify-content: space-between;    
+}
+
+#period div .period-btn {
+    width: 75%;    
+}
+
+#period div .prio-btn {
+    width: 18%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 75%;      
 }
 
 #period button {    
     font-family: 'Courier New', Courier, monospace;    
     background-color: azure;
-    border: 2px outset #80b3d1;
-    font-size: 1.4rem;
+    border: 2px outset #80b3d1;    
     font-weight: 600;
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 5px;
-    box-shadow: -1px 2px 3px 1px #9aafb9;    
+    box-shadow: -1px 2px 3px 1px #9aafb9;
+    font-size: 1.2em;        
+}
+
+#period div:nth-child(2) button:first-child, 
+#period div:nth-child(4) button:first-child {
+    background-size: 50%;
 }
 
 #collection-controls {    
