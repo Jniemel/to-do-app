@@ -155,11 +155,13 @@ export function clearContentArea() {
 }
 
 // append to-do's details and return as a div
-function todoDetails(todo) {   
+function todoDetails(todo, clickable) {   
 
     const div = document.createElement('div');
     div.classList.add('to-do-details');
-    div.addEventListener('click', focus);
+    if (clickable) {
+        div.addEventListener('click', focus);
+    }    
 
     const sub = document.createElement('h2');
     sub.classList.add('to-do-subject');
@@ -220,14 +222,14 @@ function todoDetails(todo) {
 // open the details of to-do to content area
 export function openTodo(todo) {
     clearContentArea();
-    contentArea.appendChild(todoDetails(todo))
+    contentArea.appendChild(todoDetails(todo, false))
 }
 
 // open the details of collection to content area
 export function openCollection(collection) {
     clearContentArea();
     for (let i = 0; i < collection.todos.length; i++) {
-        contentArea.appendChild(todoDetails(collection.todos[i]));
+        contentArea.appendChild(todoDetails(collection.todos[i], true));
     }
 }
 

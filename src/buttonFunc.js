@@ -171,9 +171,10 @@ export function activateTodo(e) {
 
 export function focus(e) {
     
-    let todoDiv;
-    lastClickedTodo = e.target.querySelector('.to-do-subject').textContent;
+    const clicked = e.target.closest('.to-do-details');    
+    lastClickedTodo = clicked.querySelector('.to-do-subject').textContent;
     const divs = document.querySelectorAll('.to-do');
+    let todoDiv;
     divs.forEach(div => {
         if (div.id === lastClickedTodo) {
             todoDiv = div;
