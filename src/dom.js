@@ -2,6 +2,7 @@ import clock from './images/clock.png';
 import circle from './images/circle.png';
 import snail from './images/snail.png';
 import check from './images/check.png';
+import { activateCollection, activateTodo, minimizeCollection } from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -44,7 +45,7 @@ function priorityIcon(priority) {
 }
 
 // create a to-do div
-export function createTodoDiv(todo, listenerFunction) {
+export function createTodoDiv(todo) {
      
      const todoDiv = document.createElement('div');
      todoDiv.classList.add('to-do');
@@ -70,7 +71,7 @@ export function createTodoDiv(todo, listenerFunction) {
      } else {
         sub.textContent = todo["subject"];
      }     
-     sub.addEventListener('click', listenerFunction);
+     sub.addEventListener('click', activateTodo);
 
      // append elements into to-do
      prioIcon.appendChild(icon);
@@ -81,13 +82,13 @@ export function createTodoDiv(todo, listenerFunction) {
 }
 
 // create a collection div
-export function createCollectionDiv(collection, collectionListener, todoListener, minMaxListener) {
+export function createCollectionDiv(collection) {
 
     // create div & header 
     const collectionDiv = document.createElement('div');
     collectionDiv.classList.add('collection');    
     collectionDiv.id = collection["name"];
-    collectionDiv.addEventListener('click', collectionListener);
+    collectionDiv.addEventListener('click', activateCollection);
     const collectionHeader = document.createElement('div');
     collectionHeader.classList.add('collection-header');
     collectionDiv.appendChild(collectionHeader);
@@ -95,7 +96,7 @@ export function createCollectionDiv(collection, collectionListener, todoListener
     // add header text, progress and min/max-button to header
     const headerTxt = document.createElement('p');
     headerTxt.classList.add('collection-header-txt');
-    if (collection["name"].length > 17) {    
+    if (collection["name"].length > 25) {    
         headerTxt.textContent = collection.short();
     } else {
         headerTxt.textContent = collection["name"];
@@ -104,7 +105,7 @@ export function createCollectionDiv(collection, collectionListener, todoListener
     progressDiv.classList.add('progress-div');
     const minMax = document.createElement('button');
     minMax.textContent = '-';
-    minMax.addEventListener('click', minMaxListener);
+    minMax.addEventListener('click', minimizeCollection);
     collectionHeader.append(headerTxt, progressDiv, minMax);
     
     // if collection has to-dos, append to-do subjects
@@ -117,7 +118,7 @@ export function createCollectionDiv(collection, collectionListener, todoListener
         
         // display the collections to-dos
         for (let i = 0; i < collection.todos.length; i++) {            
-            todoDiv.appendChild(createTodoDiv(collection.todos[i], todoListener));
+            todoDiv.appendChild(createTodoDiv(collection.todos[i]));
         }
         
         // calculate collection progress

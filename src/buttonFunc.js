@@ -3,8 +3,7 @@ import { removeTodo } from "./todo";
 import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
-
-
+import { storageSaveData } from "./storage";
 
 const collectionsContainer = document.querySelector('#collections');
 
@@ -15,8 +14,9 @@ export function createNewCollection() {
     let validation = validateInput(input, collections, "name");
     
     if (validation === 'valid') {
-        addCollection(input.trim(), collections)             
-        collectionsContainer.appendChild(createCollectionDiv(collections[collections.length - 1], activateCollection, activateTodo, minimizeCollection));
+        addCollection(input.trim(), collections);                     
+        collectionsContainer.appendChild(createCollectionDiv(collections[collections.length - 1]));
+        storageSaveData(collections);
     } else if (validation != 'valid' && validation != 'null') {
         alert('Adding the new collection failed.\nreason: ' + validation);
     }
@@ -37,11 +37,14 @@ export function deleteCollection() {
 
             // check confirmation, proceed to remove the collection
             if (confirm.toLocaleLowerCase() === 'yes') {
+
                 removeCollection(lastClickedCollection, collections);
-                clearCollectionDiv(lastClickedCollection);                
-                lastClickedCollection = '';
-                lastClickedTodo = '';                
+                clearCollectionDiv(lastClickedCollection);
                 clearContentArea();
+                storageSaveData(collections);
+                lastClickedCollection = '';
+                lastClickedTodo = '';
+                   
             } else {
                 alert('Confirmation did not match!');
             }

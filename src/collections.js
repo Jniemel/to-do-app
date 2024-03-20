@@ -6,7 +6,7 @@ function createCollection(collectionName) {
 
     //const addTodo = (todo) => todos.push(todo);
     const clearTodos = () => todos.length = 0;
-    const short = () => name.slice(0, 17) + "...";
+    const short = () => name.slice(0, 25) + "...";
     function progress() {
         // calculate the collections progress from # of done to-do's
         let total = todos.length;
