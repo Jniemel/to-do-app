@@ -168,6 +168,14 @@ export function addEmptyDiv() {
 // placement reference
 const contentArea = document.querySelector('#content .content-container');
 
+// add header to content-area
+export function changeHeaderText(text) {
+    
+        const p = document.querySelector('#content-area-header p');
+        p.textContent = text;
+}
+
+
 // clear content container
 export function clearContentArea() {    
     const toClear = contentArea.querySelectorAll('.to-do-details');    

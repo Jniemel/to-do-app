@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { addTodo, removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, createTodoDiv} from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveData } from "./storage";
@@ -77,12 +77,14 @@ export function activateCollection(e) {
         clicked.setAttribute('data', 'last-clicked-collection')                      
     }
 
+    
     // open collection to content area
+    changeHeaderText(lastClickedCollection);
     collections.forEach((collection) => {
         if (collection["name"] === lastClickedCollection) {                
             openCollection(collection);
         }
-    });
+    });    
 
     // clear lastclicked attribute from last clicked to-do
     const divs = document.querySelectorAll('.to-do');
@@ -307,4 +309,7 @@ function editCollection() {
     let toEdit = prompt('Collection to edit:');
 
 }
+
+// open to-dos based on priority
+
 

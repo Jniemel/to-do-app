@@ -135,7 +135,7 @@ body {
     color: #2F4858;
     grid-column: 2 / 3;
     grid-row: 3 / 4;
-    display: flex;         
+    display: flex;             
 }
 
 #collections-header div {
@@ -176,7 +176,8 @@ body {
     background-color: azure;    
     font-size: 1.3rem;    
     text-align: left;
-    padding: 0 3px 0 3px;         
+    padding: 0 3px 0 3px;
+    overflow: hidden;         
 }
 
 .collection-header button {
@@ -297,12 +298,37 @@ body {
     padding: 0.8em 4px 0.8em 0.8em;
 }
 
+#content-area-header {
+    background-color: #80b3d1;
+    border: 2px solid #80b3d1;
+    box-shadow: -1px 2px 3px 1px #9aafb9;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;     
+    display: flex;
+    justify-content: center;   
+    height: fit-content;     
+    overflow-wrap: break-word;    
+}
+
+#content-area-header p {
+    min-height: 30px;
+    font-size: 1.8em;
+    padding: 3px 0 0 0;
+    overflow: hidden;
+    text-align: center;
+}
+
 .content-container {
+    flex-grow: 1;
     background-color: azure;
     height: 100%;
     width: 100%;
     border: 2px outset #80b3d1;
+    border-top: none;
     border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     box-shadow: -1px 2px 3px 1px #9aafb9;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));;
