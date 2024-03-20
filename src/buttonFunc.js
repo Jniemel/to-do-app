@@ -232,7 +232,8 @@ export function deleteTodo() {
                 
                 // remove to-do from collection and page
                 removeTodo(lastClickedTodo, collection["todos"]);
-                toDelete.remove();                
+                toDelete.remove();
+                storageSaveData(collections);                
                 lastClickedTodo = ''; 
 
                 // refrest content area
