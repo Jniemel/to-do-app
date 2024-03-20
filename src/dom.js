@@ -54,7 +54,7 @@ export function createTodoDiv(todo, listenerFunction) {
      // if to-do done, add done icon
      const prioIcon = document.createElement('div');                ;
      const icon = new Image();
-     if (!todo.getStatus()) {
+     if (!todo["status"]) {
          const priority = priorityIcon(todo["priority"])                
          icon.src = priority[0];
          prioIcon.classList.add(priority[1]);   
@@ -204,7 +204,7 @@ function todoDetails(todo) {
 
     const status = document.createElement('p');
     status.classList.add('to-do-status'); 
-    if (todo.getStatus()) {
+    if (todo["status"]) {
         status.textContent = "Status: Done";
         status.style.color = "Darkgreen";
         status.style.fontWeight = '700';
@@ -236,10 +236,19 @@ export function openCollection(collection) {
 
 // ------------ dialogs ------------
 
-// new to-do dialog reference
-const newTodoDialog = document.querySelector('#dialog-new-todo');
+// open dialog and set subtmit event listener
+export function openDialog(dialogId, submitListener) {
 
-export function openNewTodoDialog() {
-    newTodoDialog.showModal();
+    const dialog = document.querySelector('#' + dialogId);
+    const cancel = dialog.querySelector('.submit-cancel');
+    cancel.addEventListener('click', () => {        
+        dialog.close();
+    })
+    const dialogForm = dialog.querySelector('form');
+    dialogForm.addEventListener('submit', submitListener);
+    dialog.showModal();
 }
+
+
+
 

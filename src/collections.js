@@ -13,7 +13,7 @@ function createCollection(collectionName) {
         if (total != 0) {
             let done = 0;
             for (let i = 0; i < total; i++) {
-                if (todos[i].getStatus()) {
+                if (todos[i]["status"]) {
                     done += 1;
                 }
             }

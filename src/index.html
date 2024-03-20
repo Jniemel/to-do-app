@@ -31,11 +31,11 @@
         </div>        
         <div id="footer"><h5>@Jniemel</h5></div>
         <dialog id="dialog-new-todo">
-            <form>
-                <div>
-                    <h2>New to-do</h2>
-                    <button type="submit" aria-label="close" formmethod="dialog" formnovalidate>X</button>                    
-                </div>          
+            <div class="dialog-header">
+                <h2>New to-do</h2>
+                <button class="submit-cancel">X</button>                    
+            </div>       
+            <form>      
                 <p>
                     <label>Subject:</label>
                     <input type="text" name="todo-subject" required />                    
@@ -54,7 +54,7 @@
                 </label>
                 </p>
                 <p>
-                <button type="submit">Add</button>
+                <button class="submit-send" type="submit">Add</button>
                 </p>       
           </form>
         </dialog>    

@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openNewTodoDialog} from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 
@@ -154,15 +154,18 @@ export function activateTodo(e) {
     }, collectionActivationDelay);    
 }
 
+//const newTodoDialog = document.querySelector('#dialog-new-todo');
+
 // create a new to do and add it to active (lastClicked) collection
 export function createNewTodo() {
 
     if (lastClickedCollection.length != 0) {
         
+        openDialog("dialog-new-todo", submitNewTodo);
+
         // find the last clicked collection which will hold the new to-do
-        let collection = collections.find(element => element["name"] === lastClickedCollection);
+        //let collection = collections.find(element => element["name"] === lastClickedCollection);        
         
-        openNewTodoDialog();
 
         /*
         // prompt & validate the new to-dos subject
@@ -196,7 +199,22 @@ export function createNewTodo() {
             alert('Adding the new to-do failed.\nreason: ' + validation);
         }
         */       
+    } else {
+        alert('No collection selected!');
     }
+}
+
+
+function submitNewTodo(e) {      
+    console.log(e);
+    /*    
+    const formData = new FormData(e.target);
+    const subject = formData.get("todo-subject");
+    const notes = formData.get("todo-notes");
+    const priority = formData.get("todo-priority");
+    console.log(subject, notes, priority);
+    */
+       
 }
 
 // delete active (last clicked) to-do

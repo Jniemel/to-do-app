@@ -1,4 +1,6 @@
 import './styles.css';
-import { collections, init } from './init';
+import { init } from './init';
 
 init();
+
+

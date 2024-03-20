@@ -4,12 +4,10 @@ export function createTodo(todoSubject, todoDueDate, todoNotes, todoPriority = 0
     let date = todoDueDate.length != 0 ? todoDueDate : 'no date set';        
     let notes = todoNotes;
     let priority = todoPriority;
-    let status = false;
-    const getStatus = () => status;
-    const editStatus = () => status = status ? false : true;
+    let status = false;    
     const short = () => subject.slice(0, 50) + "...";
 
-    return { subject, date, notes, priority, getStatus, editStatus, short };
+    return { subject, date, notes, priority, status, short };
     
 }
 
