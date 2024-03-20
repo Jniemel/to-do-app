@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
-import { removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog} from "./dom";
+import { addTodo, removeTodo } from "./todo";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, createTodoDiv} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveData } from "./storage";
@@ -44,7 +44,7 @@ export function deleteCollection() {
                 storageSaveData(collections);
                 lastClickedCollection = '';
                 lastClickedTodo = '';
-                   
+
             } else {
                 alert('Confirmation did not match!');
             }
@@ -157,67 +157,57 @@ export function activateTodo(e) {
     }, collectionActivationDelay);    
 }
 
-//const newTodoDialog = document.querySelector('#dialog-new-todo');
-
-// create a new to do and add it to active (lastClicked) collection
+// open the dialog for creating a new to-do
 export function createNewTodo() {
 
-    if (lastClickedCollection.length != 0) {
-        
-        openDialog("dialog-new-todo", submitNewTodo);
-
-        // find the last clicked collection which will hold the new to-do
-        //let collection = collections.find(element => element["name"] === lastClickedCollection);        
-        
-
-        /*
-        // prompt & validate the new to-dos subject
-        const input = prompt('Subject of the new to-do: ');
-        const validation = validateInput(input, collection["todos"], "subject");
-        
-        if (validation === 'valid') {            
-            // init a new to-do and add into collection  
-            let todo = Array(4).fill('');                  
-            todo[0] = input.trim()                        
-            addTodo(collection, todo);
-
-            const appendTo = collectionsContainer.querySelector('#' + lastClickedCollection);            
-            // remove the empty div if collection was empty
-            const divs = appendTo.querySelectorAll('div');        
-            divs.forEach((div) => {            
-                if (div.getAttribute('class') === 'empty') {
-                    div.remove();
-                }
-            });
-    
-            // create the div-element for the new to-do and append
-            appendTo.appendChild(createTodoDiv(collection["todos"][collection["todos"].length - 1], open))
-            // refresh content area
-            openCollection(collection);
-            // refresh progress
-            const progressDiv = appendTo.querySelector('.collection-header .progress-div');
-            progressDiv.textContent = collection.progress();
-
-        } else if (validation != 'valid' && validation != 'null') {
-            alert('Adding the new to-do failed.\nreason: ' + validation);
-        }
-        */       
+    if (lastClickedCollection.length != 0) {        
+        openDialog("dialog-new-todo", submitNewTodo);       
     } else {
         alert('No collection selected!');
     }
 }
 
+// submit the new to-do
+function submitNewTodo(e) { 
 
-function submitNewTodo(e) {      
-    console.log(e);
-    /*    
-    const formData = new FormData(e.target);
+    // find the last clicked collection which will hold the new to-do
+    let collection = collections.find(element => element["name"] === lastClickedCollection);
+    
+    // prompt & validate the new to-dos subject
+    const formData = new FormData(e.target);    
     const subject = formData.get("todo-subject");
-    const notes = formData.get("todo-notes");
-    const priority = formData.get("todo-priority");
-    console.log(subject, notes, priority);
-    */
-       
+    const validation = validateInput(subject, collection["todos"], "subject");
+
+    // if name valid, proceed to create the to-do
+    if (validation === 'valid') {
+
+        const notes = formData.get("todo-notes");        
+        const prioStr = formData.get("todo-priority");        
+        let priority = 0;
+
+        switch (prioStr) {
+            case 'Low':
+                priority = 0;
+                break;
+            case 'Medium':
+                priority = 1;
+                break;
+            case 'High':
+                priority = 2; 
+        }
+
+        const todo = [
+            subject,
+            '',            
+            notes,
+            priority,
+        ]
+        addTodo(collection, todo);
+        storageSaveData(collections); 
+
+    } else if (validation != 'valid' && validation != 'null') {
+        alert('Adding the new to-do failed.\nreason: ' + validation);
+    }      
 }
 
 // delete active (last clicked) to-do

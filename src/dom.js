@@ -237,7 +237,7 @@ export function openCollection(collection) {
 
 // ------------ dialogs ------------
 
-// open dialog and set subtmit event listener
+// open dialog and set submit event listener
 export function openDialog(dialogId, submitListener) {
 
     const dialog = document.querySelector('#' + dialogId);

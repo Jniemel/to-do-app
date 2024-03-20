@@ -13,16 +13,15 @@ export function init() {
 
     if (storageAvailable("localStorage")) {     
 
-        if (!localStorage.getItem("collections")) {
-            storageInit();
-            console.log('collection created');            
+        if (!localStorage.getItem("collections")) {            
+            storageInit(); 
         } else {
+
             collections = storageFetchData(collections);
             for (let i = 0; i < collections.length; i++) {
                 const collectionsContainer = document.querySelector('#collections');    
                 collectionsContainer.appendChild(createCollectionDiv(collections[i]));
-            }
-            console.log('collection exists');
+            }            
         }
 
     } else {        

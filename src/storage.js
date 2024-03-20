@@ -56,7 +56,7 @@ export function storageFetchData(collections) {
                 const todo = [
                     data[i]["todos"][j]["subject"], 
                     data[i]["todos"][j]["date"], 
-                    data[i]["todos"][j]["subject"],
+                    data[i]["todos"][j]["notes"],
                     data[i]["todos"][j]["priority"],
                     data[i]["todos"][j]["status"]
                 ]
