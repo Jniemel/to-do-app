@@ -63,12 +63,7 @@ export function activateCollection(e) {
         
         // save and open the clicked collection
         lastClickedCollection = clicked.id;
-        lastClickedTodo = '';        
-        collections.forEach((collection) => {
-            if (collection["name"] === lastClickedCollection) {                
-                openCollection(collection);
-            }
-        });              
+        lastClickedTodo = '';
 
         // remove 'last clicked' attribute from previously active collection & to-do
         const divs = document.querySelectorAll('.collection, .to-do');
@@ -81,12 +76,28 @@ export function activateCollection(e) {
         // set 'last clicked' attribute to collection that was clicked
         clicked.setAttribute('data', 'last-clicked-collection')                      
     }
+
+    // open collection to content area
+    collections.forEach((collection) => {
+        if (collection["name"] === lastClickedCollection) {                
+            openCollection(collection);
+        }
+    });
+
+    // clear lastclicked attribute from last clicked to-do
+    const divs = document.querySelectorAll('.to-do');
+    divs.forEach((div) => {
+        if (div.getAttribute('data') === 'last-clicked-collection' || div.getAttribute('data') === 'last-clicked-todo') {            
+            div.removeAttribute('data');            
+        }
+    });
+    lastClickedTodo = '';
 }
 
 // minimize collection
 export function minimizeCollection(e) {
 
-    e.stopImmediatePropagation();    
+    e.stopImmediatePropagation();      
     const minimize = e.target.closest('.collection');
     const progressDiv = minimize.querySelector('.collection-header .progress-div');
     const minButton = minimize.querySelector('.collection-header button');
@@ -124,37 +135,38 @@ export function minimizeCollection(e) {
 // activate to-do
 export function activateTodo(e) {
 
-    let collectionActivationDelay = 50;
-    setTimeout(function() {
-        
-        // check if different to-do clicked
-        const clicked = e.target.closest('.to-do');          
-        if (clicked.id != lastClickedTodo) {
-                
-            // save and open the clicked to-do
-            lastClickedTodo = clicked.id;
-            collections.forEach((collection) => {
-                if (collection["name"] === lastClickedCollection) {                
-                    collection.todos.forEach((todo) => {
-                        if (todo["subject"] === lastClickedTodo) {
-                            openTodo(todo);
-                        }
-                    });                
-                }
-            });
-            
-            // remove 'last clicked' attribute if new button is clicked
-            const divs = document.querySelectorAll('.to-do');
-            divs.forEach((div) => {
-                if (div.getAttribute('data') === 'last-clicked-todo') {            
-                    div.removeAttribute('data');            
-                }
-            });
+    e.stopImmediatePropagation();
+    activateCollection(e);  
 
-            // set 'last clicked' attribute to todo that was clicked
-            clicked.setAttribute('data', 'last-clicked-todo')        
+    // check if different to-do clicked
+    const clicked = e.target.closest('.to-do');          
+    if (clicked.id != lastClickedTodo) {
+            
+        // save and open the clicked to-do
+        lastClickedTodo = clicked.id;
+        
+        // remove 'last clicked' attribute if new button is clicked
+        const divs = document.querySelectorAll('.to-do');
+        divs.forEach((div) => {
+            if (div.getAttribute('data') === 'last-clicked-todo') {            
+                div.removeAttribute('data');            
+            }
+        });
+
+        // set 'last clicked' attribute to todo that was clicked
+        clicked.setAttribute('data', 'last-clicked-todo')    
+    }
+    
+    // open the to-do details to content area
+    collections.forEach((collection) => {
+        if (collection["name"] === lastClickedCollection) {                
+            collection.todos.forEach((todo) => {
+                if (todo["subject"] === lastClickedTodo) {
+                    openTodo(todo);
+                }
+            });                
         }
-    }, collectionActivationDelay);    
+    });
 }
 
 // open the dialog for creating a new to-do
