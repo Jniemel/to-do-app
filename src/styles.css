@@ -331,12 +331,16 @@ body {
     border-top-right-radius: 0px;
     box-shadow: -1px 2px 3px 1px #9aafb9;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));;
-    overflow: auto; 
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    padding: 2px;
+    gap: 2px;
+    overflow: auto;
+    scrollbar-color: #2F4858 #80b3d1;
+    scrollbar-width: thin;    
 }
 
 .to-do-details {
-    border: 2px outset #80b3d1;
+    border: 1px solid #80b3d1;
     min-height: 300px;
     display: flex;
     flex-direction: column;
