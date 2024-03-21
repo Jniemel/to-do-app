@@ -169,13 +169,15 @@ export function addEmptyDiv() {
 const contentArea = document.querySelector('#content .content-container');
 
 // add header to content-area
-export function changeHeaderText(text) {
-    
+export function changeHeaderText(text) {  
+
         const p = document.querySelector('#content-area-header p');
         p.textContent = text;
 }
 
+// display 'overview'-button, which returns user to collection-view
 export function displayOverviewBtn(collectionId) {
+
     const overviewBtn = document.querySelector('#content-area-header button');
     overviewBtn.style.display = 'flex';
     overviewBtn.setAttribute('data-return', collectionId)
@@ -185,7 +187,9 @@ export function displayOverviewBtn(collectionId) {
     })
 }
 
+// hide the overview button
 export function hideOverviewBtn() {
+    
     const overviewBtn = document.querySelector('#content-area-header button');
     overviewBtn.style.display = 'none';
     overviewBtn.removeAttribute('data-return');    

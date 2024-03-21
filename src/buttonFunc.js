@@ -145,6 +145,7 @@ export function minimizeCollection(e) {
 export function activateTodo(e) {
 
     e.stopImmediatePropagation();
+    // activate the collection which holds the selected to-do also
     activateCollection(e);  
 
     // check if different to-do clicked
@@ -176,6 +177,7 @@ export function activateTodo(e) {
             });                
         }
     });
+    // display 'overview'-button so user can quickly return to collection-view
     displayOverviewBtn(lastClickedCollection);
 }
 
@@ -203,10 +205,12 @@ export function focus(e) {
                 }
             });                
         }
-    });    
+    });
+    // display 'overview'-button so user can quickly return to collection-view    
     displayOverviewBtn(lastClickedCollection);
 }
 
+// return user to collection view when 'overview'-button is pressed
 export function overview(collectionId) {
 
     let collection = findCollection(collectionId);
@@ -220,7 +224,6 @@ export function overview(collectionId) {
             div.removeAttribute('data');            
         }
     });
-
 }
 
 // open the dialog for creating a new to-do
