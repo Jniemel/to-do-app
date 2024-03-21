@@ -2,7 +2,7 @@ import clock from './images/clock.png';
 import circle from './images/circle.png';
 import snail from './images/snail.png';
 import check from './images/check.png';
-import { activateCollection, activateTodo, minimizeCollection , focus} from './buttonFunc';
+import { activateCollection, activateTodo, minimizeCollection , focus, overview} from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -175,6 +175,21 @@ export function changeHeaderText(text) {
         p.textContent = text;
 }
 
+export function displayOverviewBtn(collectionId) {
+    const overviewBtn = document.querySelector('#content-area-header button');
+    overviewBtn.style.display = 'flex';
+    overviewBtn.setAttribute('data-return', collectionId)
+    overviewBtn.addEventListener('click', () => {
+        overviewBtn.style.display = 'none';
+        overview(collectionId);
+    })
+}
+
+export function hideOverviewBtn() {
+    const overviewBtn = document.querySelector('#content-area-header button');
+    overviewBtn.style.display = 'none';
+    overviewBtn.removeAttribute('data-return');    
+}
 
 // clear content container
 export function clearContentArea() {    

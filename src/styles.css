@@ -306,17 +306,36 @@ body {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;     
     display: flex;
-    justify-content: center;   
+    justify-content: center;
+    align-items: center;   
     height: fit-content;     
-    overflow-wrap: break-word;    
+    overflow-wrap: break-word; 
+    position: relative;      
 }
 
-#content-area-header p {
-    min-height: 30px;
+#content-area-header div {
+    height: fit-content;
+}
+
+#content-area-header div p { 
     font-size: 1.8em;
-    padding: 3px 0 0 0;
+    padding: 3px 0 3px 0;
     overflow: hidden;
     text-align: center;
+}
+
+#content-area-header button {
+    position: absolute;
+    right: 5px;
+    display: none;
+    width: fit-content;        
+    background-color: #cadbe4;
+    border: 2px solid #80b3d1;  
+    border-radius: 5px;
+    padding: 4px;
+    margin-right: 8px;    
+    font-size: 1.05rem;    
+    font-weight: 800;    
 }
 
 .content-container {

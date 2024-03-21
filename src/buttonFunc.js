@@ -1,11 +1,16 @@
 import { addCollection, removeCollection } from "./collections";
 import { addTodo, removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText} from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn} from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveData } from "./storage";
 
 const collectionsContainer = document.querySelector('#collections');
+
+// finding collection from collections 
+function findCollection(name) {     
+     return collections.find(collection => collection ["name"] === name);
+}
 
 // create a new collection and display it on the page
 export function createNewCollection() {
@@ -76,7 +81,6 @@ export function activateCollection(e) {
         // set 'last clicked' attribute to collection that was clicked
         clicked.setAttribute('data', 'last-clicked-collection')                      
     }
-
     
     // open collection to content area
     changeHeaderText(lastClickedCollection);
@@ -94,6 +98,9 @@ export function activateCollection(e) {
         }
     });
     lastClickedTodo = '';
+
+    // clear overview button
+    hideOverviewBtn();
 }
 
 // minimize collection
@@ -128,7 +135,7 @@ export function minimizeCollection(e) {
         }
     } else {        
         minimize.removeAttribute('minimize');
-        const collection = collections.find(element => element["name"] === minimize.id);
+        const collection = findCollection(minimize.id);        
         progressDiv.textContent = collection.progress();
         minButton.textContent = '-';
     }
@@ -169,6 +176,7 @@ export function activateTodo(e) {
             });                
         }
     });
+    displayOverviewBtn(lastClickedCollection);
 }
 
 export function focus(e) {
@@ -186,16 +194,33 @@ export function focus(e) {
     // set 'last clicked' attribute to todo that was clicked
     todoDiv.setAttribute('data', 'last-clicked-todo');   
     
-    // open the to-do details to content area
+    // open the to-do details to content area    
     collections.forEach((collection) => {
-        if (collection["name"] === lastClickedCollection) {                
+        if (collection["name"] === lastClickedCollection) {                         
             collection.todos.forEach((todo) => {
                 if (todo["subject"] === lastClickedTodo) {
                     openTodo(todo);
                 }
             });                
         }
+    });    
+    displayOverviewBtn(lastClickedCollection);
+}
+
+export function overview(collectionId) {
+
+    let collection = findCollection(collectionId);
+    openCollection(collection);
+    lastClickedTodo = '';
+    
+    // clear 'last clicked' attribute from to-do
+    const divs = document.querySelectorAll('.to-do');
+    divs.forEach((div) => {
+        if (div.getAttribute('data') === 'last-clicked-todo') {            
+            div.removeAttribute('data');            
+        }
     });
+
 }
 
 // open the dialog for creating a new to-do
@@ -212,7 +237,7 @@ export function createNewTodo() {
 function submitNewTodo(e) { 
 
     // find the last clicked collection which will hold the new to-do
-    let collection = collections.find(element => element["name"] === lastClickedCollection);
+    let collection =  findCollection(lastClickedCollection);
     
     // prompt & validate the new to-dos subject
     const formData = new FormData(e.target);    
@@ -265,7 +290,7 @@ export function deleteTodo() {
             if (confirm.toLocaleLowerCase() === 'yes') {
 
                 // find the last clicked collection which the to-do is to be removed from
-                const collection = collections.find(element => element["name"] === lastClickedCollection);
+                const collection = findCollection(lastClickedCollection);
                 const collectionDiv = document.querySelector('.collection#' + lastClickedCollection);
 
                 // get the div that holds the to-do 
