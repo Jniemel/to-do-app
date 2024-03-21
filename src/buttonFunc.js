@@ -142,7 +142,7 @@ export function minimizeCollection(e) {
         }
     } else {        
         minimize.removeAttribute('minimize');
-        const collection = findElement("name", minimize.id);        
+        const collection = findElement("name", minimize.id, collections);        
         progressDiv.textContent = collection.progress();
         minButton.textContent = '-';
     }
