@@ -130,6 +130,10 @@ body {
     box-shadow: -1px 2px 3px 1px #9aafb9;  
 }
 
+#to-do-controls button:nth-child(3) {
+    background-size: 45% 55%; 
+}
+
 #collections-header {    
     background-color: #cadbe4;
     color: #2F4858;
@@ -300,8 +304,8 @@ body {
 
 #content-area-header {
     background-color: #80b3d1;
-    border: 2px solid #80b3d1;
-    box-shadow: -1px 2px 3px 1px #9aafb9;
+    border: 2px solid #80b3d1;    
+    box-shadow: -1px 0px 3px 1px #9aafb9;
     border-radius: 5px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;     
@@ -310,7 +314,7 @@ body {
     align-items: center;   
     height: fit-content;     
     overflow-wrap: break-word; 
-    position: relative;      
+    position: relative;         
 }
 
 #content-area-header div {
@@ -338,10 +342,10 @@ body {
     font-weight: 800;    
 }
 
-.content-container {
-    flex-grow: 1;
+.content-container {    
     background-color: azure;
-    height: 100%;
+    min-height: fit-content;
+    max-height: 100%;    
     width: 100%;
     border: 2px outset #80b3d1;
     border-top: none;
@@ -386,7 +390,7 @@ body {
     grid-row: 5 / 6;    
 }
 
-#dialog-new-todo {
+#dialog-todo {
     border: 2px outset #80b3d1;
     border-radius: 5px;
     box-shadow: -1px 2px 3px 1px #9aafb9;   

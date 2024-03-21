@@ -2,7 +2,9 @@ import clock from './images/clock.png';
 import circle from './images/circle.png';
 import snail from './images/snail.png';
 import check from './images/check.png';
-import { activateCollection, activateTodo, minimizeCollection , focus, overview} from './buttonFunc';
+import pen from './images/pen.png';
+
+import { activateCollection, activateTodo, minimizeCollection , focus, overview, editTodo } from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -189,7 +191,7 @@ export function displayOverviewBtn(collectionId) {
 
 // hide the overview button
 export function hideOverviewBtn() {
-    
+
     const overviewBtn = document.querySelector('#content-area-header button');
     overviewBtn.style.display = 'none';
     overviewBtn.removeAttribute('data-return');    
@@ -271,24 +273,44 @@ function todoDetails(todo, clickable) {
 // open the details of to-do to content area
 export function openTodo(todo) {
     clearContentArea();
-    contentArea.appendChild(todoDetails(todo, false))
+    showTodoEditBtn();
+    contentArea.appendChild(todoDetails(todo, false));
+    
 }
 
 // open the details of collection to content area
 export function openCollection(collection) {
     clearContentArea();
+    clearTodoEditBtn();
     for (let i = 0; i < collection.todos.length; i++) {
         contentArea.appendChild(todoDetails(collection.todos[i], true));
     }
 }
 
+function showTodoEditBtn() {
+    const container = document.querySelector('#to-do-controls');
+    const btn = createButton('', '', editTodo, pen);
+    btn.id = 'edit-todo-btn'
+    btn.addEventListener('click', editTodo);
+    container.appendChild(btn);    
+}
+
+function clearTodoEditBtn() {    
+    const btn = document.querySelector('#edit-todo-btn');
+    if (btn != null) {
+        btn.remove();
+    }    
+}
+
 // ------------ dialogs ------------
 
 // open dialog and set submit event listener
-export function openDialog(dialogId, submitListener) {
+export function openDialog(dialogId, headerText, submitListener) {
 
     const dialog = document.querySelector('#' + dialogId);
     const cancel = dialog.querySelector('.submit-cancel');
+    const header = dialog.querySelector('h2');
+    header.textContent = headerText;
     cancel.addEventListener('click', () => {        
         dialog.close();
     })
@@ -296,7 +318,3 @@ export function openDialog(dialogId, submitListener) {
     dialogForm.addEventListener('submit', submitListener);
     dialog.showModal();
 }
-
-
-
-

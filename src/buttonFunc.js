@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { addTodo, removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn} from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn } from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveData } from "./storage";
@@ -8,8 +8,12 @@ import { storageSaveData } from "./storage";
 const collectionsContainer = document.querySelector('#collections');
 
 // finding collection from collections 
-function findCollection(name) {     
-     return collections.find(collection => collection ["name"] === name);
+function findElement(key, value, array) {     
+     return array.find(element => element[key] === value);
+}
+
+function findElementIndex(key, value, array) {
+    return array.findIndex(element => element[key] === value);
 }
 
 // create a new collection and display it on the page
@@ -45,8 +49,11 @@ export function deleteCollection() {
 
                 removeCollection(lastClickedCollection, collections);
                 clearCollectionDiv(lastClickedCollection);
-                clearContentArea();
                 storageSaveData(collections);
+                clearContentArea();
+                changeHeaderText('');
+                clearTodoEditBtn();
+                hideOverviewBtn();
                 lastClickedCollection = '';
                 lastClickedTodo = '';
 
@@ -135,7 +142,7 @@ export function minimizeCollection(e) {
         }
     } else {        
         minimize.removeAttribute('minimize');
-        const collection = findCollection(minimize.id);        
+        const collection = findElement("name", minimize.id);        
         progressDiv.textContent = collection.progress();
         minButton.textContent = '-';
     }
@@ -178,7 +185,7 @@ export function activateTodo(e) {
         }
     });
     // display 'overview'-button so user can quickly return to collection-view
-    displayOverviewBtn(lastClickedCollection);
+    displayOverviewBtn(lastClickedCollection);    
 }
 
 export function focus(e) {
@@ -213,7 +220,7 @@ export function focus(e) {
 // return user to collection view when 'overview'-button is pressed
 export function overview(collectionId) {
 
-    let collection = findCollection(collectionId);
+    let collection = findElement("name", collectionId, collections);
     openCollection(collection);
     lastClickedTodo = '';
     
@@ -230,7 +237,7 @@ export function overview(collectionId) {
 export function createNewTodo() {
 
     if (lastClickedCollection.length != 0) {        
-        openDialog("dialog-new-todo", submitNewTodo);       
+        openDialog("dialog-todo", 'New to-do', submitNewTodo);       
     } else {
         alert('No collection selected!');
     }
@@ -240,9 +247,9 @@ export function createNewTodo() {
 function submitNewTodo(e) { 
 
     // find the last clicked collection which will hold the new to-do
-    let collection =  findCollection(lastClickedCollection);
+    let collection =  findElement("name", lastClickedCollection, collections);;
     
-    // prompt & validate the new to-dos subject
+    // validate the new to-dos subject
     const formData = new FormData(e.target);    
     const subject = formData.get("todo-subject");
     const validation = validateInput(subject, collection["todos"], "subject");
@@ -293,7 +300,7 @@ export function deleteTodo() {
             if (confirm.toLocaleLowerCase() === 'yes') {
 
                 // find the last clicked collection which the to-do is to be removed from
-                const collection = findCollection(lastClickedCollection);
+                const collection = findElement("name", lastClickedCollection, collections);;
                 const collectionDiv = document.querySelector('.collection#' + lastClickedCollection);
 
                 // get the div that holds the to-do 
@@ -327,9 +334,116 @@ export function deleteTodo() {
     } 
 }
 
-// wip
-function editTodo() {
-    let toEdit = prompt('To-do to edit:');
+// edit the active to-do
+export function editTodo() {
+
+    openDialog("dialog-todo", 'Edit to-do', submitEditedTodo);
+    const dialog = document.querySelector('#dialog-todo');    
+    const todoDetails = document.querySelector('.content-container .to-do-details');
+
+    // get initial values from the to-do into the dialogs inputs
+    const inputSubject = dialog.querySelector('#todo-subject');    
+    inputSubject.value = todoDetails.querySelector('.to-do-subject').textContent;
+
+    const inputNotes = dialog.querySelector('#todo-notes');
+    inputNotes.textContent = todoDetails.querySelector('.to-do-notes').textContent;
+
+    const inputPriority = dialog.querySelector('#todo-priority');
+    switch (todoDetails.querySelector('.to-do-prio').textContent) {
+        case 'Priority: Low':
+            inputPriority.value = 'Low';
+            break;
+        case 'Priority: Medium':
+            inputPriority.value = 'Medium';
+            break;
+        case 'Priority: High':
+            inputPriority.value = 'High';
+            break;
+    }
+}
+
+// submit the edited to-do
+function submitEditedTodo(e) {
+
+    // get the active collection which holds the to be edited to-do
+    // and the to be edited to-do
+    //let collection =  findCollection(lastClickedCollection);   
+    //let old = findTodo(lastClickedTodo, collection["todos"]);
+    //let collection = findElement("name", lastClickedCollection, collections);
+    let collectionIndex = findElementIndex("name", lastClickedCollection, collections);
+    let todoIndex = findElementIndex("subject", lastClickedTodo, collections[collectionIndex]["todos"]);
+    
+    //console.log(collection["todos"][0]);
+    // check if subject changed
+    const formData = new FormData(e.target);    
+    const subject = formData.get("todo-subject");
+    const old = collections[collectionIndex]["todos"][todoIndex]["subject"];
+    let validation = 'default';
+    let noChange = false;
+    
+    if (subject != old) {
+        validation = validateInput(subject, collections[collectionIndex]["todos"], "subject");        
+    } else {
+        noChange = true;
+    }
+
+    if (validation === 'valid' || noChange) {
+        collections[collectionIndex]["todos"][todoIndex]["subject"] = subject;
+        collections[collectionIndex]["todos"][todoIndex]["notes"] = formData.get("todo-notes");                      
+        const str = formData.get("todo-priority");        
+        let priority = 0;
+        switch (str) {
+            case 'Low':
+                priority = 0;
+                break;
+            case 'Medium':
+                priority = 1;
+                break;
+            case 'High':
+                priority = 2;
+        } 
+        collections[collectionIndex]["todos"][todoIndex]["priority"] = priority;
+        storageSaveData(collections);
+    } else if (validation != 'valid' && validation != 'null' && validation != 'default') {
+        alert('Adding the new to-do failed.\nreason: ' + validation);
+    }
+    /*
+    // check if subject changed
+    const formData = new FormData(e.target);    
+    const subject = formData.get("todo-subject");
+    let validation = 'default';
+    let noChange = false;
+    if (subject != old["subject"]) {
+        validation = validateInput(subject, collection["todos"], "subject");        
+    } else {
+        noChange = true;
+    }
+
+    // if name valid or same, proceed
+    if (validation === 'valid' || noChange) {     
+        console.log('Yo!!');
+        const notes = formData.get("todo-notes");                
+        const prioStr = formData.get("todo-priority");        
+        let priority = 0;
+        switch (prioStr) {
+            case 'Low':
+                priority = 0;
+                break;
+            case 'Medium':
+                priority = 1;
+                break;
+            case 'High':
+                priority = 2; 
+        }
+        
+
+
+        storageSaveData(collections); 
+
+    } else if (validation != 'valid' && validation != 'null' && validation != 'default') {
+        alert('Adding the new to-do failed.\nreason: ' + validation);
+    }      
+    */
 }
 
 // wip
