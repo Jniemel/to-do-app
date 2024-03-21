@@ -311,7 +311,14 @@ export function openDialog(dialogId, headerText, submitListener) {
     const cancel = dialog.querySelector('.submit-cancel');
     const header = dialog.querySelector('h2');
     header.textContent = headerText;
-    cancel.addEventListener('click', () => {        
+    cancel.addEventListener('click', function (e) {       
+        const dialog = e.target.closest('dialog');
+        const inputs = dialog.querySelectorAll('#todo-subject, #todo-notes, #todo-priority');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        const form = dialog.querySelector('form');
+        form.removeEventListener('submit', submitListener)
         dialog.close();
     })
     const dialogForm = dialog.querySelector('form');

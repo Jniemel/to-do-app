@@ -282,7 +282,7 @@ function submitNewTodo(e) {
         storageSaveData(collections); 
 
     } else if (validation != 'valid' && validation != 'null') {
-        alert('Adding the new to-do failed.\nreason: ' + validation);
+        alert('Editing the to-do failed.\nreason: ' + validation);
     }      
 }
 
