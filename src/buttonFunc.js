@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { addTodo, removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn } from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn, clearTodoEditBtn } from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveData } from "./storage";
@@ -51,9 +51,9 @@ export function deleteCollection() {
                 clearCollectionDiv(lastClickedCollection);
                 storageSaveData(collections);
                 clearContentArea();
-                changeHeaderText('');
-                clearTodoEditBtn();
+                changeHeaderText('');                
                 hideOverviewBtn();
+                clearTodoEditBtn();
                 lastClickedCollection = '';
                 lastClickedTodo = '';
 

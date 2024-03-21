@@ -295,7 +295,7 @@ function showTodoEditBtn() {
     container.appendChild(btn);    
 }
 
-function clearTodoEditBtn() {    
+export function clearTodoEditBtn() {    
     const btn = document.querySelector('#edit-todo-btn');
     if (btn != null) {
         btn.remove();
