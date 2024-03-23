@@ -450,6 +450,14 @@ dialog input {
     height: 1.4rem;
 }
 
+dialog input[type="date"] {    
+    display: flex;
+    flex-direction: row;
+    width: 65%;
+    height: 1.4rem;
+}
+
+
 dialog textarea {
     max-width: 95%;
     min-width: 95%;

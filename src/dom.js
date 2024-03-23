@@ -307,21 +307,25 @@ export function clearTodoEditBtn() {
 // open dialog and set submit event listener
 export function openDialog(dialogId, headerText, submitListener) {
 
-    const dialog = document.querySelector('#' + dialogId);
-    const cancel = dialog.querySelector('.submit-cancel');
+    const dialog = document.querySelector('#' + dialogId);    
+        
     const header = dialog.querySelector('h2');
     header.textContent = headerText;
-    cancel.addEventListener('click', function (e) {       
+
+    const cancelBtn = dialog.querySelector('.submit-cancel');
+    cancelBtn.addEventListener('click', function(e) {
         const dialog = e.target.closest('dialog');
         const inputs = dialog.querySelectorAll('#todo-subject, #todo-notes, #todo-priority');
         inputs.forEach(input => {
             input.value = '';
         });
-        const form = dialog.querySelector('form');
-        form.removeEventListener('submit', submitListener)
+        const form = dialog.querySelector('form');        
+        form.removeEventListener('submit', submitListener);        
         dialog.close();
-    })
-    const dialogForm = dialog.querySelector('form');
+    }); 
+
+    const dialogForm = dialog.querySelector('form');    
     dialogForm.addEventListener('submit', submitListener);
+
     dialog.showModal();
 }

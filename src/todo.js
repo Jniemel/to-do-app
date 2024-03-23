@@ -1,7 +1,7 @@
 export function createTodo(todoSubject, todoDueDate, todoNotes, todoPriority = 0) {
 
     let subject = todoSubject;
-    let date = todoDueDate.length != 0 ? todoDueDate : 'no date set';        
+    let date = todoDueDate.length != 0 ? todoDueDate : 'No date set';        
     let notes = todoNotes;
     let priority = todoPriority;
     let status = false;    

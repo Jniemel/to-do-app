@@ -244,7 +244,9 @@ export function createNewTodo() {
 }
 
 // submit the new to-do
-function submitNewTodo(e) { 
+function submitNewTodo(e) {
+
+    e.preventDefault();
 
     // find the last clicked collection which will hold the new to-do
     let collection =  findElement("name", lastClickedCollection, collections);;
@@ -257,6 +259,7 @@ function submitNewTodo(e) {
     // if name valid, proceed to create the to-do
     if (validation === 'valid') {
 
+        const due = formData.get("todo-date");        
         const notes = formData.get("todo-notes");        
         const prioStr = formData.get("todo-priority");        
         let priority = 0;
@@ -274,12 +277,13 @@ function submitNewTodo(e) {
 
         const todo = [
             subject,
-            '',            
+            due,            
             notes,
             priority,
         ]
         addTodo(collection, todo);
         storageSaveData(collections); 
+        location.reload();
 
     } else if (validation != 'valid' && validation != 'null') {
         alert('Editing the to-do failed.\nreason: ' + validation);
@@ -345,6 +349,16 @@ export function editTodo() {
     const inputSubject = dialog.querySelector('#todo-subject');    
     inputSubject.value = todoDetails.querySelector('.to-do-subject').textContent;
 
+    const inputDate = dialog.querySelector('#todo-date');
+    console.log(inputDate);
+    
+    if (todoDetails.querySelector('.to-do-subject').textContent.toLocaleLowerCase() === 'no date set') {
+        inputDate.value = '';
+    } else {
+        console.log('here');
+        inputDate.value = todoDetails.querySelector('.to-do-subject').value;
+    }  
+
     const inputNotes = dialog.querySelector('#todo-notes');
     inputNotes.textContent = todoDetails.querySelector('.to-do-notes').textContent;
 
@@ -365,15 +379,9 @@ export function editTodo() {
 // submit the edited to-do
 function submitEditedTodo(e) {
 
-    // get the active collection which holds the to be edited to-do
-    // and the to be edited to-do
-    //let collection =  findCollection(lastClickedCollection);   
-    //let old = findTodo(lastClickedTodo, collection["todos"]);
-    //let collection = findElement("name", lastClickedCollection, collections);
     let collectionIndex = findElementIndex("name", lastClickedCollection, collections);
     let todoIndex = findElementIndex("subject", lastClickedTodo, collections[collectionIndex]["todos"]);
     
-    //console.log(collection["todos"][0]);
     // check if subject changed
     const formData = new FormData(e.target);    
     const subject = formData.get("todo-subject");
@@ -389,13 +397,11 @@ function submitEditedTodo(e) {
 
     if (validation === 'valid' || noChange) {
         collections[collectionIndex]["todos"][todoIndex]["subject"] = subject;
+        collections[collectionIndex]["todos"][todoIndex]["date"] = formData.get("todo-date");
         collections[collectionIndex]["todos"][todoIndex]["notes"] = formData.get("todo-notes");                      
         const str = formData.get("todo-priority");        
         let priority = 0;
         switch (str) {
-            case 'Low':
-                priority = 0;
-                break;
             case 'Medium':
                 priority = 1;
                 break;
@@ -404,46 +410,11 @@ function submitEditedTodo(e) {
         } 
         collections[collectionIndex]["todos"][todoIndex]["priority"] = priority;
         storageSaveData(collections);
-    } else if (validation != 'valid' && validation != 'null' && validation != 'default') {
-        alert('Adding the new to-do failed.\nreason: ' + validation);
-    }
-    /*
-    // check if subject changed
-    const formData = new FormData(e.target);    
-    const subject = formData.get("todo-subject");
-    let validation = 'default';
-    let noChange = false;
-    if (subject != old["subject"]) {
-        validation = validateInput(subject, collection["todos"], "subject");        
-    } else {
-        noChange = true;
-    }
-
-    // if name valid or same, proceed
-    if (validation === 'valid' || noChange) {     
-        console.log('Yo!!');
-        const notes = formData.get("todo-notes");                
-        const prioStr = formData.get("todo-priority");        
-        let priority = 0;
-        switch (prioStr) {
-            case 'Low':
-                priority = 0;
-                break;
-            case 'Medium':
-                priority = 1;
-                break;
-            case 'High':
-                priority = 2; 
-        }
-        
-
-
-        storageSaveData(collections); 
+        location.reload();
 
     } else if (validation != 'valid' && validation != 'null' && validation != 'default') {
         alert('Adding the new to-do failed.\nreason: ' + validation);
-    }      
-    */
+    }    
 }
 
 // wip
