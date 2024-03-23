@@ -31,18 +31,13 @@ export function createNewCollection() {
     }
 }
 
-//let lastClickedCollection = '';
-//let lastClickedTodo = '';
-
 // delete collection
 export function deleteCollection() {
     
-    // check if active collection exists
-    //if (lastClickedCollection != '') {
+    // check if active collection exists        
     if (fetchActiveCollection() != '') {
 
-        // confirmation, has to match "yes", no case sensitivity
-        //const confirm = prompt('Are you sure you want to delete the collection named: "' + lastClickedCollection + '"?\nConfirm by writing "yes"');
+        // confirmation, has to match "yes", no case sensitivity        
         const confirm = prompt('Are you sure you want to delete the collection named: "' + fetchActiveCollection() + '"?\nConfirm by writing "yes"');
 
         if (confirm != undefined && confirm != null) {
