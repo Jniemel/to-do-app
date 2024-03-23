@@ -420,7 +420,12 @@ function submitEditedTodo(e) {
 // invert the to-dos status (done, not done)
 export function changeTodoStatus(e) {
     
-    e.stopImmediatePropagation()    
+    e.stopImmediatePropagation()
+
+    if (!fetchActiveTodo()) {
+        saveActiveTodo(e.target.parentNode.querySelector('.to-do-subject').textContent);
+    }    
+      
     // find the position of the to-be-edited to-do
     let collectionIndex = findElementIndex("name", fetchActiveCollection(), collections);
     let todoIndex = findElementIndex("subject", fetchActiveTodo(), collections[collectionIndex]["todos"]);
@@ -434,7 +439,7 @@ export function changeTodoStatus(e) {
 
     // save and refresh page
     storageSaveCollections(collections);
-    location.reload();
+    location.reload();    
 }
 
 // open to-dos based on priority
