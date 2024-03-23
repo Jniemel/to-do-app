@@ -4,7 +4,7 @@ import { addCollection } from './collections';
 import { addTodo } from './todo';
 import { createNewCollection, deleteCollection, activateCollection, createNewTodo, deleteTodo, activateTodo, minimizeCollection } from './buttonFunc';
 import { createButton, createCollectionDiv, setButtonImage } from './dom';
-import { storageAvailable, storageInit, storageFetchData, storageSaveData } from './storage';
+import { storageAvailable, storageInit, storageFetchCollections, storageSaveCollections } from './storage';
 
 // init array for collections
 export let collections = [];
@@ -17,7 +17,7 @@ export function init() {
             storageInit(); 
         } else {
 
-            collections = storageFetchData(collections);
+            collections = storageFetchCollections(collections);
             for (let i = 0; i < collections.length; i++) {
                 const collectionsContainer = document.querySelector('#collections');    
                 collectionsContainer.appendChild(createCollectionDiv(collections[i]));

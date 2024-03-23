@@ -30,18 +30,18 @@ export function storageAvailable(type) {
     }
 }
   
-// init collections
+// init collections to localstorage
 export function storageInit() {
     localStorage.setItem("collections", []);
 }
 
-// save collection
-export function storageSaveData(collections) {
+// save collections to localstorage
+export function storageSaveCollections(collections) {
     localStorage.setItem("collections", JSON.stringify(collections));
 }
 
-// fetch data from localstorage
-export function storageFetchData(collections) {
+// fetch collections from localstorage
+export function storageFetchCollections(collections) {
 
     collections = [];
     const data = JSON.parse(localStorage.getItem("collections"));    
@@ -66,4 +66,21 @@ export function storageFetchData(collections) {
     }    
 
     return collections;
+}
+
+export function saveActiveCollection(id) {
+    sessionStorage.setItem("activeCollection", id);
+    localStorage.setItem("lastActiveCollection", id);
+}
+
+export function fetchActiveCollection() {
+    return sessionStorage.getItem("activeCollection");
+}
+
+export function saveActiveTodo(id) {
+    sessionStorage.setItem("activeTodo", id);
+}
+
+export function fetchActiveTodo() {
+   return sessionStorage.getItem("activeTodo");
 }

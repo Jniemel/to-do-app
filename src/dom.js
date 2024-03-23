@@ -4,7 +4,7 @@ import snail from './images/snail.png';
 import check from './images/check.png';
 import pen from './images/pen.png';
 
-import { activateCollection, activateTodo, minimizeCollection , focus, overview, editTodo } from './buttonFunc';
+import { activateCollection, activateTodo, minimizeCollection , focus, overview, editTodo, changeTodoStatus } from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -253,19 +253,24 @@ function todoDetails(todo, clickable) {
     }
 
     const status = document.createElement('p');
+    let btnClass;    
     status.classList.add('to-do-status'); 
     if (todo["status"]) {
         status.textContent = "Status: Done";
         status.style.color = "Darkgreen";
         status.style.fontWeight = '700';
-        prio.style.color = 'darkgrey'; 
+        prio.style.color = 'darkgrey';
+        btnClass = 'set-undone';        
     } else {
         status.textContent = "Status: Not done";
         status.style.fontWeight = '400'; 
-        status.style.color = (todo["priority"] == 0) ? 'darkgrey' : 'darkred';   
-    }  
+        status.style.color = (todo["priority"] == 0) ? 'darkgrey' : 'darkred'; 
+        btnClass = 'set-done';
+    }
+    
+    const statusBtn = createButton(btnClass, 'Change status', changeTodoStatus);    
 
-    div.append(sub, date, prio, status, notesHeader, notes);
+    div.append(sub, date, prio, status, notesHeader, notes, statusBtn);
     
     return div;
 }
@@ -274,8 +279,7 @@ function todoDetails(todo, clickable) {
 export function openTodo(todo) {
     clearContentArea();
     showTodoEditBtn();
-    contentArea.appendChild(todoDetails(todo, false));
-    
+    contentArea.appendChild(todoDetails(todo, false));    
 }
 
 // open the details of collection to content area
@@ -283,7 +287,7 @@ export function openCollection(collection) {
     clearContentArea();
     clearTodoEditBtn();
     for (let i = 0; i < collection.todos.length; i++) {
-        contentArea.appendChild(todoDetails(collection.todos[i], true));
+        contentArea.appendChild(todoDetails(collection["todos"][i], true));
     }
 }
 
