@@ -192,7 +192,9 @@ export function focus(e) {
     
     const clicked = e.target.closest('.to-do-details');    
     lastClickedTodo = clicked.querySelector('.to-do-subject').textContent;
-    const divs = document.querySelectorAll('.to-do');
+
+    const collectionDiv = document.querySelector('[data="last-clicked-collection"]');
+    const divs = collectionDiv.querySelectorAll('.todo-div .to-do');
     let todoDiv;
     divs.forEach(div => {
         if (div.id === lastClickedTodo) {
@@ -201,8 +203,8 @@ export function focus(e) {
     });
 
     // set 'last clicked' attribute to todo that was clicked
-    todoDiv.setAttribute('data', 'last-clicked-todo');   
-    
+    todoDiv.setAttribute('data', 'last-clicked-todo');     
+
     // open the to-do details to content area    
     collections.forEach((collection) => {
         if (collection["name"] === lastClickedCollection) {                         
@@ -215,6 +217,7 @@ export function focus(e) {
     });
     // display 'overview'-button so user can quickly return to collection-view    
     displayOverviewBtn(lastClickedCollection);
+    
 }
 
 // return user to collection view when 'overview'-button is pressed
@@ -415,12 +418,6 @@ function submitEditedTodo(e) {
     } else if (validation != 'valid' && validation != 'null' && validation != 'default') {
         alert('Adding the new to-do failed.\nreason: ' + validation);
     }    
-}
-
-// wip
-function editCollection() {
-    let toEdit = prompt('Collection to edit:');
-
 }
 
 // open to-dos based on priority
