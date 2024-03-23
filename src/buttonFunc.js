@@ -7,7 +7,6 @@ import { storageSaveCollections, storageFetchCollections, fetchActiveCollection,
 
 const collectionsContainer = document.querySelector('#collections');
 
-// finding collection from collections 
 function findElement(key, value, array) {     
      return array.find(element => element[key] === value);
 }
@@ -72,8 +71,7 @@ export function activateCollection(e) {
     if (clicked.getAttribute('data') != 'last-clicked-collection') {
         
         // save and open the clicked collection
-        saveActiveCollection(clicked.id);
-        saveActiveTodo('');
+        saveActiveCollection(clicked.id);        
 
         // remove 'last clicked' attribute from previously active collection & to-do
         const divs = document.querySelectorAll('.collection, .to-do');
@@ -102,7 +100,7 @@ export function activateCollection(e) {
             div.removeAttribute('data');            
         }
     });
-    fetchActiveTodo('');
+    saveActiveTodo('');
 
     // clear overview button
     hideOverviewBtn();
@@ -421,10 +419,12 @@ function submitEditedTodo(e) {
 export function changeTodoStatus(e) {
     
     e.stopImmediatePropagation()
-
-    if (!fetchActiveTodo()) {
-        saveActiveTodo(e.target.parentNode.querySelector('.to-do-subject').textContent);
-    }    
+    
+    const todoDetails = e.target.closest('.to-do-details') 
+    console.log(todoDetails.querySelector('.to-do-subject').textContent);
+    if (!fetchActiveTodo() || fetchActiveTodo() != todoDetails.querySelector('.to-do-subject').textContent) {
+        saveActiveTodo(todoDetails.querySelector('.to-do-subject').textContent);
+    }
       
     // find the position of the to-be-edited to-do
     let collectionIndex = findElementIndex("name", fetchActiveCollection(), collections);
@@ -439,7 +439,8 @@ export function changeTodoStatus(e) {
 
     // save and refresh page
     storageSaveCollections(collections);
-    location.reload();    
+    location.reload();
+        
 }
 
 // open to-dos based on priority

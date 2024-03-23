@@ -269,8 +269,10 @@ function todoDetails(todo, clickable) {
     }
     
     const statusBtn = createButton(btnClass, 'Change status', changeTodoStatus);    
+    const btnDiv = document.createElement('div');
+    btnDiv.appendChild(statusBtn);
 
-    div.append(sub, date, prio, status, notesHeader, notes, statusBtn);
+    div.append(sub, date, prio, status, notesHeader, notes, btnDiv);
     
     return div;
 }
