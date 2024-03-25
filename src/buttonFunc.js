@@ -427,8 +427,8 @@ export function changeTodoStatus(e) {
     
     switch (fetchActiveCollection().toLocaleLowerCase()) {
         case 'today': 
-        case 'this week': 
-        case 'this month':
+        case 'week': 
+        case 'month':
         case 'no date set':            
             saveActiveCollection(todoDetails.querySelector('h1').textContent);;
             break;
@@ -455,24 +455,34 @@ export function changeTodoStatus(e) {
 }
 
 function findTodosByTime(array, currentDate, period) {
-    let todos = [];    
+    let todos = [];
+    const timeMin = currentDate;
+    let timeMax;
     if (period === 'today') {
-        for (let i = 0; i < array.length; i++) {
-            for (let j = 0; j < array[i]["todos"].length; j++) {
-                const d = new Date(collections[i]["todos"][j]["date"]);
-                // trim off hours, minutes and seconds from the date value
-                const str = "'" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "'"
-                const t = new Date(str).getTime();                
-                if (currentDate === t) {
-                    let entry = {
-                        "collection": array[i]["name"], 
-                        "todo": array[i]["todos"][j]
-                    }                                                          
-                    todos.push(entry);
-                }
+        timeMax = timeMin;
+    } else if (period === 'week') {
+        // add one week to today (ms)
+        timeMax = timeMin + 604800000;  
+    } else if (period === 'month') {
+        // add one month
+        timeMax = timeMin + 2629800000; 
+    }
+    
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[i]["todos"].length; j++) {
+            const d = new Date(collections[i]["todos"][j]["date"]);
+            // trim off hours, minutes and seconds from the date value
+            const str = "'" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "'"
+            const t = new Date(str).getTime();                
+            if (t >= timeMin && t <= timeMax) {
+                let entry = {
+                    "collection": array[i]["name"], 
+                    "todo": array[i]["todos"][j]
+                }                                                          
+                todos.push(entry);
             }
         }
-    }
+    }    
 
     return todos;
 }
@@ -489,8 +499,7 @@ export function getTodosByPeriod(timePeriod) {
     const str = "'" + today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate() + "'"
     const time = new Date(str).getTime();    
 
-    const array = findTodosByTime(collections, time, period);
-    console.log(array);
+    const array = findTodosByTime(collections, time, period);    
     
     changeHeaderText(period);
     openTodoArray(array);

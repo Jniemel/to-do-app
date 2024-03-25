@@ -55,23 +55,22 @@ export function init() {
     todoControls.appendChild(createButton('', '', deleteTodo, minus));
 
     // open the last activated collection/period/priority when loading/refreshing page
-    switch (fetchActiveCollection()) {
+    switch (fetchActiveCollection().toLocaleLowerCase()) {
         case 'today':
             getTodosByPeriod('today');
             break;
 
-        case 'this week':
-        
+        case 'week':
+            getTodosByPeriod('week');
             break;
 
-        case 'this month':
-            
+        case 'month':
+            getTodosByPeriod('month');
             break;
 
         case 'no date set':
             
-            break;
-        
+            break;        
         
         case 'empty':            
             break;

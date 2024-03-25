@@ -55,16 +55,12 @@ function searchByTextContent(text, array) {
 // ------------ period / priority buttons ------------
 
 const periodBtns = document.querySelectorAll('.period-btn');
-
-const todayBtn = searchByTextContent('Today', periodBtns);
-todayBtn.addEventListener('click', function(e) {
-    const period = e.target.textContent;
-    getTodosByPeriod(period);
+periodBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        const period = e.target.textContent;
+        getTodosByPeriod(period);
+    })
 });
-const thisWeekBtn = searchByTextContent('This week', periodBtns);
-const thisMonthBtn = searchByTextContent('This month', periodBtns);
-const AllBtn = searchByTextContent('all', periodBtns);
-
 
 // ------------ collection area ------------
 
@@ -314,7 +310,6 @@ export function openCollection(collection) {
         contentArea.appendChild(todoDetails(collection["todos"][i], true));
     }
 }
-
 
 export function openTodoArray(array) {
     clearContentArea();
