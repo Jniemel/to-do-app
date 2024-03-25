@@ -74,7 +74,15 @@ export function saveActiveCollection(id) {
 }
 
 export function fetchActiveCollection() {
-    return sessionStorage.getItem("activeCollection");
+    if (!sessionStorage.getItem("activeCollection")) {
+        if (!localStorage.getItem("lastActiveCollection")) {
+            return 'empty';
+        } else {
+            return localStorage.getItem("lastActiveCollection");
+        }
+    } else {
+        return sessionStorage.getItem("activeCollection");
+    }    
 }
 
 export function saveActiveTodo(id) {
@@ -82,5 +90,9 @@ export function saveActiveTodo(id) {
 }
 
 export function fetchActiveTodo() {
-   return sessionStorage.getItem("activeTodo");
+    if (!sessionStorage.getItem("activeTodo")) {
+        return 'empty';
+    } else {
+        return sessionStorage.getItem("activeTodo");
+    }
 }

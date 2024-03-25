@@ -34,7 +34,7 @@ export function createNewCollection() {
 export function deleteCollection() {
     
     // check if active collection exists        
-    if (fetchActiveCollection() != '') {
+    if (fetchActiveCollection() != 'empty' ) {
 
         // confirmation, has to match "yes", no case sensitivity        
         const confirm = prompt('Are you sure you want to delete the collection named: "' + fetchActiveCollection() + '"?\nConfirm by writing "yes"');
@@ -234,7 +234,7 @@ export function overview(collectionId) {
 // open the dialog for creating a new to-do
 export function createNewTodo() {
 
-    if (fetchActiveCollection().length != 0) {        
+    if (fetchActiveCollection() != 'empty') {        
         openDialog("dialog-todo", 'New to-do', submitNewTodo);       
     } else {
         alert('No collection selected!');
@@ -292,7 +292,7 @@ function submitNewTodo(e) {
 export function deleteTodo() {
 
     // check if active to-do exists
-    if (fetchActiveTodo() != '') {
+    if (fetchActiveTodo() != 'empty') {
 
         // confirmation, has to match "yes", no case sensitivity
         const confirm = prompt('Are you sure you want to delete the to-do named: "' + fetchActiveTodo() + '"?\nConfirm by writing "yes"');    
@@ -425,7 +425,7 @@ export function changeTodoStatus(e) {
     if (!fetchActiveTodo() || fetchActiveTodo() != todoDetails.querySelector('.to-do-subject').textContent) {
         saveActiveTodo(todoDetails.querySelector('.to-do-subject').textContent);
     }
-      
+
     // find the position of the to-be-edited to-do
     let collectionIndex = findElementIndex("name", fetchActiveCollection(), collections);
     let todoIndex = findElementIndex("subject", fetchActiveTodo(), collections[collectionIndex]["todos"]);
