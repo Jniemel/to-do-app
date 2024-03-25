@@ -1,7 +1,7 @@
 import plus from './images/plus.png';
 import minus from './images/minus.png';
 import { addCollection } from './collections';
-import { createNewCollection, deleteCollection, activateCollection, createNewTodo, deleteTodo, activateTodo, minimizeCollection } from './buttonFunc';
+import { createNewCollection, deleteCollection, activateCollection, createNewTodo, deleteTodo, activateTodo, minimizeCollection, getTodosByPeriod } from './buttonFunc';
 import { changeHeaderText, createButton, createCollectionDiv, openCollection, setButtonImage } from './dom';
 import { storageAvailable, storageInit, storageFetchCollections, storageSaveCollections, fetchActiveCollection } from './storage';
 
@@ -54,7 +54,42 @@ export function init() {
     todoControls.appendChild(createButton('', '', createNewTodo, plus));
     todoControls.appendChild(createButton('', '', deleteTodo, minus));
 
-    // open the last activated collection when loading/refreshing page
+    // open the last activated collection/period/priority when loading/refreshing page
+    switch (fetchActiveCollection()) {
+        case 'today':
+            getTodosByPeriod('today');
+            break;
+
+        case 'this week':
+        
+            break;
+
+        case 'this month':
+            
+            break;
+
+        case 'no date set':
+            
+            break;
+        
+        
+        case 'empty':            
+            break;
+
+        default:
+            const collection = collections.find(collection => collection["name"] === localStorage.getItem("lastActiveCollection"));        
+            const collectionDivs = document.querySelectorAll('.collection');
+            collectionDivs.forEach(div => {
+                if (div.id === localStorage.getItem("lastActiveCollection")) {
+                    div.setAttribute('data', 'last-clicked-collection');
+                }            
+            });
+            openCollection(collection);
+            changeHeaderText(localStorage.getItem("lastActiveCollection"));
+            break;
+    }
+}
+    /*
     if (localStorage.getItem("lastActiveCollection")) {        
         const collection = collections.find(collection => collection["name"] === localStorage.getItem("lastActiveCollection"));        
         const collectionDivs = document.querySelectorAll('.collection');
@@ -66,4 +101,6 @@ export function init() {
         openCollection(collection);
         changeHeaderText(localStorage.getItem("lastActiveCollection"));
     }
+   
 }
+*/

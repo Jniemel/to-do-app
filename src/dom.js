@@ -4,7 +4,7 @@ import snail from './images/snail.png';
 import check from './images/check.png';
 import pen from './images/pen.png';
 
-import { activateCollection, activateTodo, minimizeCollection , focus, overview, editTodo, changeTodoStatus } from './buttonFunc';
+import { activateCollection, activateTodo, minimizeCollection , focus, overview, editTodo, changeTodoStatus, getTodosByPeriod } from './buttonFunc';
 
 // create a button
 export function createButton(cssClass, text, func, path = '') {
@@ -43,6 +43,28 @@ export function setButtonImage(btn, image) {
 
     btn.style.backgroundImage = "url('" + path + "')";
 }
+
+function searchByTextContent(text, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (array[i].textContent === text) {
+            return array[i];
+        }
+    }
+}
+
+// ------------ period / priority buttons ------------
+
+const periodBtns = document.querySelectorAll('.period-btn');
+
+const todayBtn = searchByTextContent('Today', periodBtns);
+todayBtn.addEventListener('click', function(e) {
+    const period = e.target.textContent;
+    getTodosByPeriod(period);
+});
+const thisWeekBtn = searchByTextContent('This week', periodBtns);
+const thisMonthBtn = searchByTextContent('This month', periodBtns);
+const AllBtn = searchByTextContent('all', periodBtns);
+
 
 // ------------ collection area ------------
 
@@ -290,6 +312,19 @@ export function openCollection(collection) {
     clearTodoEditBtn();
     for (let i = 0; i < collection.todos.length; i++) {
         contentArea.appendChild(todoDetails(collection["todos"][i], true));
+    }
+}
+
+
+export function openTodoArray(array) {
+    clearContentArea();
+    clearTodoEditBtn();
+    for (let i = 0; i < array.length; i++) {        
+        const header = document.createElement('h1');
+        header.textContent = array[i]["collection"];
+        const div = todoDetails(array[i]["todo"], false);
+        div.insertBefore(header, div.firstChild);
+        contentArea.appendChild(div);
     }
 }
 

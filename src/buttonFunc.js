@@ -1,6 +1,6 @@
 import { addCollection, removeCollection } from "./collections";
 import { addTodo, removeTodo } from "./todo";
-import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn, clearTodoEditBtn } from "./dom";
+import { createCollectionDiv, clearContentArea, clearCollectionDiv, openCollection, addEmptyDiv, openTodo, openDialog, changeHeaderText, displayOverviewBtn, hideOverviewBtn, clearTodoEditBtn, openTodoArray } from "./dom";
 import { validateInput } from "./validate";
 import { collections } from "./init";
 import { storageSaveCollections, storageFetchCollections, fetchActiveCollection, fetchActiveTodo, saveActiveCollection, saveActiveTodo } from "./storage";
@@ -15,7 +15,7 @@ function findElementIndex(key, value, array) {
     return array.findIndex(element => element[key] === value);
 }
 
-// collectioncreate a new collection and display it on the page
+// create a new collection and display it on the page
 export function createNewCollection() {
 
     let input = prompt('Name of the new collection:');
@@ -418,12 +418,23 @@ function submitEditedTodo(e) {
 // invert the to-dos status (done, not done)
 export function changeTodoStatus(e) {
     
-    e.stopImmediatePropagation()
+    e.stopImmediatePropagation()    
     
-    const todoDetails = e.target.closest('.to-do-details') 
-    console.log(todoDetails.querySelector('.to-do-subject').textContent);
+    const todoDetails = e.target.closest('.to-do-details')     
     if (!fetchActiveTodo() || fetchActiveTodo() != todoDetails.querySelector('.to-do-subject').textContent) {
         saveActiveTodo(todoDetails.querySelector('.to-do-subject').textContent);
+    }    
+    
+    switch (fetchActiveCollection().toLocaleLowerCase()) {
+        case 'today': 
+        case 'this week': 
+        case 'this month':
+        case 'no date set':            
+            saveActiveCollection(todoDetails.querySelector('h1').textContent);;
+            break;
+
+        default:
+            break;
     }
 
     // find the position of the to-be-edited to-do
@@ -443,6 +454,46 @@ export function changeTodoStatus(e) {
         
 }
 
-// open to-dos based on priority
+function findTodosByTime(array, currentDate, period) {
+    let todos = [];    
+    if (period === 'today') {
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i]["todos"].length; j++) {
+                const d = new Date(collections[i]["todos"][j]["date"]);
+                // trim off hours, minutes and seconds from the date value
+                const str = "'" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "'"
+                const t = new Date(str).getTime();                
+                if (currentDate === t) {
+                    let entry = {
+                        "collection": array[i]["name"], 
+                        "todo": array[i]["todos"][j]
+                    }                                                          
+                    todos.push(entry);
+                }
+            }
+        }
+    }
 
+    return todos;
+}
+
+// open to-dos based on period
+export function getTodosByPeriod(timePeriod) {
+    
+    const period = timePeriod.toLocaleLowerCase();
+    saveActiveCollection(period);
+    saveActiveTodo('');
+
+    // current date as ms
+    const today = new Date();
+    const str = "'" + today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate() + "'"
+    const time = new Date(str).getTime();    
+
+    const array = findTodosByTime(collections, time, period);
+    console.log(array);
+    
+    changeHeaderText(period);
+    openTodoArray(array);
+
+}
 
