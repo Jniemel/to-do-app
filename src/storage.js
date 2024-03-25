@@ -74,8 +74,8 @@ export function saveActiveCollection(id) {
 }
 
 export function fetchActiveCollection() {
-    if (!sessionStorage.getItem("activeCollection")) {
-        if (!localStorage.getItem("lastActiveCollection")) {
+    if (!sessionStorage.getItem("activeCollection") || sessionStorage.getItem("activeCollection") === '') {
+        if (!localStorage.getItem("lastActiveCollection") || localStorage.getItem("lastActiveCollection") === '') {
             return 'empty';
         } else {
             return localStorage.getItem("lastActiveCollection");
@@ -90,7 +90,7 @@ export function saveActiveTodo(id) {
 }
 
 export function fetchActiveTodo() {
-    if (!sessionStorage.getItem("activeTodo")) {
+    if (!sessionStorage.getItem("activeTodo") || sessionStorage.getItem("activeTodo") === '') {
         return 'empty';
     } else {
         return sessionStorage.getItem("activeTodo");
