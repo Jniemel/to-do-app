@@ -233,11 +233,19 @@ export function overview(collectionId) {
 
 // open the dialog for creating a new to-do
 export function createNewTodo() {
+    
+    switch (fetchActiveCollection().toLocaleLowerCase()) {
+        case 'today': 
+        case 'week': 
+        case 'month':
+        case 'no date set':
+        case 'empty':            
+            alert('No collection selected!');
+            break;
 
-    if (fetchActiveCollection() != 'empty') {        
-        openDialog("dialog-todo", 'New to-do', submitNewTodo);       
-    } else {
-        alert('No collection selected!');
+        default:
+            openDialog("dialog-todo", 'New to-do', submitNewTodo);
+            break;
     }
 }
 
@@ -468,21 +476,35 @@ function findTodosByTime(array, currentDate, period) {
         timeMax = timeMin + 2629800000; 
     }
     
-    for (let i = 0; i < array.length; i++) {
-        for (let j = 0; j < array[i]["todos"].length; j++) {
-            const d = new Date(collections[i]["todos"][j]["date"]);
-            // trim off hours, minutes and seconds from the date value
-            const str = "'" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "'"
-            const t = new Date(str).getTime();                
-            if (t >= timeMin && t <= timeMax) {
-                let entry = {
-                    "collection": array[i]["name"], 
-                    "todo": array[i]["todos"][j]
-                }                                                          
-                todos.push(entry);
+    if (period != 'no date set') {
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i]["todos"].length; j++) {
+                const d = new Date(collections[i]["todos"][j]["date"]);
+                // trim off hours, minutes and seconds from the date value
+                const str = "'" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "'"
+                const t = new Date(str).getTime();                
+                if (t >= timeMin && t <= timeMax) {
+                    let entry = {
+                        "collection": array[i]["name"], 
+                        "todo": array[i]["todos"][j]
+                    }                                                          
+                    todos.push(entry);
+                }
             }
-        }
-    }    
+        }    
+    } else {
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i]["todos"].length; j++) {             
+                if (collections[i]["todos"][j]["date"].toLocaleLowerCase() === 'no date set') {
+                    let entry = {
+                        "collection": array[i]["name"], 
+                        "todo": array[i]["todos"][j]
+                    }                                                          
+                    todos.push(entry);
+                }
+            }
+        }    
+    }
 
     return todos;
 }
@@ -493,6 +515,13 @@ export function getTodosByPeriod(timePeriod) {
     const period = timePeriod.toLocaleLowerCase();
     saveActiveCollection(period);
     saveActiveTodo('');
+    // remove 'last clicked' attribute from previously active collection & to-do
+    const divs = document.querySelectorAll('.collection, .to-do');
+    divs.forEach((div) => {
+        if (div.getAttribute('data') === 'last-clicked-collection' || div.getAttribute('data') === 'last-clicked-todo') {            
+            div.removeAttribute('data');            
+        }
+    });
 
     // current date as ms
     const today = new Date();

@@ -69,7 +69,7 @@ export function init() {
             break;
 
         case 'no date set':
-            
+            getTodosByPeriod('no date set');
             break;        
         
         case 'empty':            
@@ -88,18 +88,3 @@ export function init() {
             break;
     }
 }
-    /*
-    if (localStorage.getItem("lastActiveCollection")) {        
-        const collection = collections.find(collection => collection["name"] === localStorage.getItem("lastActiveCollection"));        
-        const collectionDivs = document.querySelectorAll('.collection');
-        collectionDivs.forEach(div => {
-            if (div.id === localStorage.getItem("lastActiveCollection")) {
-                div.setAttribute('data', 'last-clicked-collection');
-            }            
-        });
-        openCollection(collection);
-        changeHeaderText(localStorage.getItem("lastActiveCollection"));
-    }
-   
-}
-*/
