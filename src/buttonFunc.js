@@ -406,15 +406,16 @@ function submitEditedTodo(e) {
         collections[collectionIndex]["todos"][todoIndex]["subject"] = subject;
         collections[collectionIndex]["todos"][todoIndex]["date"] = formData.get("todo-date");
         collections[collectionIndex]["todos"][todoIndex]["notes"] = formData.get("todo-notes");                      
-        const str = formData.get("todo-priority");        
+        const str = formData.get("todo-priority").toLocaleLowerCase();        
         let priority = 0;
         switch (str) {
-            case 'Medium':
+            case 'medium':
                 priority = 1;
                 break;
-            case 'High':
+            case 'high':
                 priority = 2;
-        }       
+        } 
+        collections[collectionIndex]["todos"][todoIndex]["priority"] = priority;      
         storageSaveCollections(collections);
         location.reload();
 
