@@ -437,7 +437,11 @@ export function changeTodoStatus(e) {
         case 'today': 
         case 'week': 
         case 'month':
-        case 'no date set':            
+        case 'no date set':
+        case 'high':
+        case 'medium':
+        case 'low':
+        case 'done':            
             saveActiveCollection(todoDetails.querySelector('h1').textContent);;
             break;
 
@@ -510,8 +514,7 @@ function findTodosByTime(array, currentDate, period) {
 }
 
 // open to-dos based on period
-export function getTodosByPeriod(timePeriod) {
-    
+export function getTodosByPeriod(timePeriod) {    
     const period = timePeriod.toLocaleLowerCase();
     saveActiveCollection(period);
     saveActiveTodo('');
@@ -532,6 +535,60 @@ export function getTodosByPeriod(timePeriod) {
     
     changeHeaderText(period);
     openTodoArray(array);
-
 }
 
+export function getTodosByPriority(priority) {    
+    let array = [];
+    let p;
+    switch (priority.toLocaleLowerCase()) {
+        case 'low':
+            p = 0;
+            break;
+        case 'medium':
+            p = 1;
+            break;
+        case 'high':
+            p = 2;
+            break;
+    }
+
+    saveActiveCollection(priority);
+    saveActiveTodo('');
+
+    for (let i = 0; i < collections.length; i++) {
+        for (let j = 0; j < collections[i]["todos"].length; j++) {
+            if (collections[i]["todos"][j]["priority"] == p) {
+                let entry = {
+                    "collection": collections[i]["name"], 
+                    "todo": collections[i]["todos"][j]
+                }                                                          
+                array.push(entry);
+            }
+        }
+    }   
+
+    changeHeaderText('Priority: ' + priority);
+    openTodoArray(array);        
+}
+
+export function getDone() {    
+    let array = [];
+
+    saveActiveCollection('done');
+    saveActiveTodo('');
+
+    for (let i = 0; i < collections.length; i++) {
+        for (let j = 0; j < collections[i]["todos"].length; j++) {
+            if (collections[i]["todos"][j]["status"] == true) {
+                let entry = {
+                    "collection": collections[i]["name"], 
+                    "todo": collections[i]["todos"][j]
+                }                                                          
+                array.push(entry);
+            }
+        }
+    }
+
+    changeHeaderText('Done');
+    openTodoArray(array); 
+}

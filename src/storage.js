@@ -64,7 +64,6 @@ export function storageFetchCollections(collections) {
             }
         }        
     }    
-
     return collections;
 }
 
@@ -74,8 +73,8 @@ export function saveActiveCollection(id) {
 }
 
 export function fetchActiveCollection() {
-    if (!sessionStorage.getItem("activeCollection") || sessionStorage.getItem("activeCollection") === '') {
-        if (!localStorage.getItem("lastActiveCollection") || localStorage.getItem("lastActiveCollection") === '') {
+    if (!sessionStorage.getItem("activeCollection") || sessionStorage.getItem("activeCollection") === '' || sessionStorage.getItem("activeCollection") == 'undefined') {
+        if (!localStorage.getItem("lastActiveCollection") || localStorage.getItem("lastActiveCollection") === '' || localStorage.getItem("lastActiveCollection") == 'undefined' ) {
             return 'empty';
         } else {
             return localStorage.getItem("lastActiveCollection");

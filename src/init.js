@@ -1,7 +1,7 @@
 import plus from './images/plus.png';
 import minus from './images/minus.png';
 import { addCollection } from './collections';
-import { createNewCollection, deleteCollection, activateCollection, createNewTodo, deleteTodo, activateTodo, minimizeCollection, getTodosByPeriod } from './buttonFunc';
+import { createNewCollection, deleteCollection, createNewTodo, deleteTodo, getTodosByPeriod, getTodosByPriority, getDone } from './buttonFunc';
 import { changeHeaderText, createButton, createCollectionDiv, openCollection, setButtonImage } from './dom';
 import { storageAvailable, storageInit, storageFetchCollections, storageSaveCollections, fetchActiveCollection } from './storage';
 
@@ -10,10 +10,8 @@ export let collections = [];
 
 export function init() {
 
-    if (storageAvailable("localStorage")) {     
-
-        if (!localStorage.getItem("collections")) {    
-
+    if (storageAvailable("localStorage")) {
+        if (!localStorage.getItem("collections")) {
             storageInit(); 
             // add some default collections
             addCollection('Work', collections);
@@ -22,27 +20,50 @@ export function init() {
             addCollection('Projects', collections);
             addCollection('Misc', collections);
             storageSaveCollections(collections);
+
         } else {
             collections = storageFetchCollections(collections);
         }
-                
+
         for (let i = 0; i < collections.length; i++) {
             const collectionsContainer = document.querySelector('#collections');    
             collectionsContainer.appendChild(createCollectionDiv(collections[i]));
-        }            
-        
+        }
 
     } else {        
          alert("No local storage available!\nCollections and to-do's cannot be saved!");
     }
 
+    // period buttons 
+    const periodBtns = document.querySelectorAll('.period-btn');
+    periodBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const period = e.target.textContent;
+            getTodosByPeriod(period);
+        })
+    });
 
     // priority buttons
     const prioBtns = document.querySelectorAll('.prio-btn');
     setButtonImage(prioBtns[0], 'clock');
+    prioBtns[0].id = 'High';    
     setButtonImage(prioBtns[1], 'circle');
+    prioBtns[1].id = 'Medium';
     setButtonImage(prioBtns[2], 'snail');
+    prioBtns[2].id = 'Low';
     setButtonImage(prioBtns[3], 'check');
+    prioBtns[3].id = 'Done';
+
+    prioBtns.forEach(btn => {
+        if (btn.id != 'Done') {
+            btn.addEventListener('click', function(e) {
+                const prio = e.target.id;                
+                getTodosByPriority(prio);
+            })
+        } else {
+            btn.addEventListener('click', getDone);
+        }  
+    });
 
     // add & remove collection buttons
     const collectionControls = document.querySelector('#collection-controls');
@@ -56,23 +77,24 @@ export function init() {
 
     // open the last activated collection/period/priority when loading/refreshing page
     switch (fetchActiveCollection().toLocaleLowerCase()) {
-        case 'today':
-            getTodosByPeriod('today');
-            break;
-
+        case 'today':            
         case 'week':
-            getTodosByPeriod('week');
-            break;
-
         case 'month':
-            getTodosByPeriod('month');
+        case 'no date set':
+            getTodosByPeriod(fetchActiveCollection().toLocaleLowerCase());
             break;
 
-        case 'no date set':
-            getTodosByPeriod('no date set');
-            break;        
-        
-        case 'empty':            
+        case 'high':
+        case 'medium':
+        case 'low':
+            getTodosByPriority(fetchActiveCollection().toLocaleLowerCase());
+            break;
+
+        case 'done':
+            getDone();
+            break;
+
+        case 'empty':           
             break;
 
         default:

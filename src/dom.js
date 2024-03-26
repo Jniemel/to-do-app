@@ -52,16 +52,6 @@ function searchByTextContent(text, array) {
     }
 }
 
-// ------------ period / priority buttons ------------
-
-const periodBtns = document.querySelectorAll('.period-btn');
-periodBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        const period = e.target.textContent;
-        getTodosByPeriod(period);
-    })
-});
-
 // ------------ collection area ------------
 
 // clear collection div 
