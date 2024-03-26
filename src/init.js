@@ -6,6 +6,17 @@ import { changeHeaderText, createButton, createCollectionDiv, openCollection, se
 import { storageAvailable, storageInit, storageFetchCollections, storageSaveCollections, fetchActiveCollection } from './storage';
 import { addTodo } from './todo';
 
+// credits
+const credits = 
+`https://www.flaticon.com/free-icons/star  Star icons created by Smashicons - Flaticon\n
+https://www.flaticon.com/free-icons/slow  Slow icons created by Freepik - Flaticon\n
+https://www.flaticon.com/free-icons/moon Moon icons created by Freepik - Flaticon\n
+https://www.flaticon.com/free-icons/temporary Temporary icons created by Anggara - Flaticon\n
+https://www.flaticon.com/free-icons/plus Plus icons created by Freepik - Flaticon\n
+https://www.flaticon.com/free-icons/minus Minus icons created by Freepik - Flaticon\n
+https://www.freepik.com/icon/correct_14441011#fromView=search&page=1&position=39&uuid=227688f5-554e-4433-9dfb-972c2a52f16f Icon by Elite Art\n
+https://www.flaticon.com/free-icons/edit Edit icons created by Kiranshastry - Flaticon`;
+
 // init array for collections
 export let collections = [];
 
@@ -19,7 +30,7 @@ export function init() {
             addTodo(collections[0], [
                 'Credits',
                 '',
-                'Credits....',
+                credits, 
                 0
                 ]
             )
