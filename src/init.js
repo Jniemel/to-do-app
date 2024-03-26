@@ -4,6 +4,7 @@ import { addCollection } from './collections';
 import { createNewCollection, deleteCollection, createNewTodo, deleteTodo, getTodosByPeriod, getTodosByPriority, getDone } from './buttonFunc';
 import { changeHeaderText, createButton, createCollectionDiv, openCollection, setButtonImage } from './dom';
 import { storageAvailable, storageInit, storageFetchCollections, storageSaveCollections, fetchActiveCollection } from './storage';
+import { addTodo } from './todo';
 
 // init array for collections
 export let collections = [];
@@ -14,6 +15,14 @@ export function init() {
         if (!localStorage.getItem("collections")) {
             storageInit(); 
             // add some default collections
+            addCollection('Credits', collections);
+            addTodo(collections[0], [
+                'Credits',
+                '',
+                'Credits....',
+                0
+                ]
+            )
             addCollection('Work', collections);
             addCollection('Studies', collections);
             addCollection('Hobbies', collections);
